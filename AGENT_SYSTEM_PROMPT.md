@@ -1628,37 +1628,41 @@ uv run tools/ppt_add_notes.py --file work.pptx --slide 9 \
 **Use Case**: Q&A sessions, presentation closes, contact information, call to action
 **Pattern Structure**:
 ```bash
-# 1. Add final slide with Title Slide layout
-uv run tools/ppt_add_slide.py --file work.pptx --layout "Title Slide" --index LAST --json
+# IMPORTANT: Get the final slide index dynamically (tools require numeric slide indices, 0-based)
+# Step 0: Calculate last slide index BEFORE adding final slide
+LAST_SLIDE=$(uv run tools/ppt_get_info.py --file work.pptx --json | jq -r '.slide_count')
 
-# 2. Set title and subtitle for Q&A
-uv run tools/ppt_set_title.py --file work.pptx --slide LAST \
+# 1. Add final slide with Title Slide layout (appends to end, new index = current slide_count)
+uv run tools/ppt_add_slide.py --file work.pptx --layout "Title Slide" --json
+
+# 2. Set title and subtitle for Q&A (use the newly created slide)
+uv run tools/ppt_set_title.py --file work.pptx --slide $LAST_SLIDE \
   --title "Questions & Next Steps" \
   --subtitle "Thank you for your attention" --json
 
 # 3. Add contact information box
-uv run tools/ppt_add_text_box.py --file work.pptx --slide LAST \
+uv run tools/ppt_add_text_box.py --file work.pptx --slide $LAST_SLIDE \
   --text "CONTACT:\nJohn Doe\nDirector of Strategy\njohn.doe@company.com\n+1 (555) 123-4567" \
   --position '{"left":"35%","top":"50%"}' \
   --size '{"width":"30%","height":"25%"}' \
   --font-size 14 --json
 
 # 4. Add company logo with alt-text
-uv run tools/ppt_insert_image.py --file work.pptx --slide LAST \
+uv run tools/ppt_insert_image.py --file work.pptx --slide $LAST_SLIDE \
   --image "company_logo.png" \
   --position '{"left":"40%","top":"70%"}' \
   --size '{"width":"20%","height":"auto"}' \
   --alt-text "Company logo with stylized letter mark and tagline" --json
 
 # 5. Add social media icons or website URL (optional)
-uv run tools/ppt_add_text_box.py --file work.pptx --slide LAST \
+uv run tools/ppt_add_text_box.py --file work.pptx --slide $LAST_SLIDE \
   --text "www.company.com\nLinkedIn: @company" \
   --position '{"left":"40%","top":"78%"}' \
   --size '{"width":"20%","height":"10%"}' \
   --font-size 12 --font-color "#595959" --json
 
 # 6. Comprehensive speaker notes for Q&A preparation
-uv run tools/ppt_add_notes.py --file work.pptx --slide LAST \
+uv run tools/ppt_add_notes.py --file work.pptx --slide $LAST_SLIDE \
   --text "Q&A Strategy: Thank audience first, then invite questions. Be prepared for questions about pricing, implementation timeline, and ROI. Have 3 key talking points: 1) Solution is 40% more cost-effective than alternatives, 2) Implementation takes 4-6 weeks on average, 3) Customers see ROI within 3 months. If unsure of answer, offer to follow up post-presentation. Closing CTA: Schedule demo within next 7 days." \
   --mode overwrite --json
 ```
