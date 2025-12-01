@@ -211,6 +211,178 @@ The evolution from v3.1 to v3.7 demonstrates impressive progress in pattern inte
 ---
 
 https://chat.qwen.ai/s/999b7aab-1d4e-4173-a31e-d5ea5396fff8?fev=0.1.7
+https://chat.qwen.ai/s/999b7aab-1d4e-4173-a31e-d5ea5396fff8?fev=0.1.7
+
+---
+
+# Comprehensive Tool Review: JSON Schema Validation Framework Assessment
+
+## Executive Summary
+
+After meticulous review of the three provided tool files (`ppt_json_adapter.py`, `ppt_add_shape.py`, and `ppt_format_text.py`), I can confirm that the **JSON Schema Validation Framework regression remains a critical gap** that must be addressed in the v3.6/v3.7 system prompt. The implementation capability exists in the tools, but the comprehensive framework documentation and mandatory validation requirements from v3.1 are still missing from the system prompt.
+
+## Detailed Analysis
+
+### 1. Current Implementation Capabilities
+
+#### `ppt_json_adapter.py` (v3.1.1) - The Validation Engine
+The JSON adapter tool is **fully functional** and exceeds v3.1 capabilities:
+- ✅ **Schema validation**: Uses `jsonschema` library for rigorous validation
+- ✅ **Alias mapping**: Comprehensive mapping of drifted/variant keys to canonical forms
+- ✅ **Fallback version computation**: Computes `presentation_version` when missing
+- ✅ **Structured error handling**: Detailed error responses with retry guidance
+- ✅ **Hygiene block**: Critical stderr redirection to prevent JSON corruption
+- ✅ **Exit code standardization**: Consistent exit codes (0=success, 2=validation error, etc.)
+
+**Key Implementation Evidence:**
+```python
+def adapt_json(schema_path: Path, input_path: Path) -> Dict[str, Any]:
+    try:
+        validate(instance=normalized, schema=schema)  # Core validation logic
+    except ValidationError as ve:
+        emit_error("SCHEMA_VALIDATION_ERROR", ve.message, ...)  # Structured error handling
+```
+
+#### `ppt_add_shape.py` (v3.1.0) & `ppt_format_text.py` (v3.1.0) - Tool Integration
+Both tools support JSON output but lack explicit schema validation integration:
+- ✅ **JSON output flag**: Both include `--json` flag (default: true)
+- ⚠️ **No schema requirements**: Neither tool's documentation mentions schema validation
+- ⚠️ **No adapter integration**: Usage examples don't show pipeline with `ppt_json_adapter.py`
+- ⚠️ **Validation mentions**: Only accessibility/validation, not schema validation
+
+**Current Tool Limitation:**
+```python
+parser.add_argument('--json', action='store_true', default=True, 
+                   help='Output JSON (default: true)')  # Missing schema validation context
+```
+
+### 2. Missing Framework Elements from v3.1
+
+Despite having a fully capable validation tool, the v3.6/v3.7 system prompt still lacks the **comprehensive framework** documented in v3.1:
+
+#### Missing Mandatory Requirements
+The v3.1 prompt explicitly stated: **"All tool outputs must validate against schemas"** - this critical directive is absent from v3.6/v3.7.
+
+#### Missing Schema Matrix
+v3.1 documented specific schema requirements per tool:
+
+| Tool | Schema | Required Fields |
+|------|--------|----------------|
+| ppt_get_info | ppt_get_info.schema.json | tool_version, schema_version, presentation_version, slide_count, slides[] |
+| ppt_capability_probe | ppt_capability_probe.schema.json | tool_version, schema_version, probe_timestamp, capabilities |
+| All mutating tools | Tool-specific | status, file, operation-specific results |
+
+This matrix is completely absent from v3.6/v3.7 documentation.
+
+#### Missing Workflow Integration
+v3.1 provided clear adapter usage patterns:
+```bash
+# Validate and normalize tool output
+python ppt_json_adapter.py --schema ppt_get_info.schema.json --input raw_output.json
+```
+This workflow integration is not documented in v3.6/v3.7.
+
+### 3. Evidence of Current Gap Impact
+
+#### Tool Documentation Disconnect
+The `ppt_json_adapter.py` tool has comprehensive capabilities but isn't properly integrated into the workflow documentation:
+- The tool's `--help` output mentions schema validation
+- But the main system prompt doesn't mandate its usage
+- Other tools don't reference it in their examples or workflows
+
+#### Missing Error Context
+Without the framework documentation, users won't understand:
+- Which schemas are required for which tools
+- How to handle validation failures
+- What the exit codes mean in context
+- How to recover from schema mismatches
+
+## Critical Assessment
+
+### Current State vs. Required State
+
+| Aspect | Current v3.6/v3.7 Status | Required for Production |
+|--------|---------------------------|------------------------|
+| Tool Capability | ✅ Fully functional validation engine | ✅ Already met |
+| Mandatory Requirement | ❌ No explicit requirement | ⚠️ Must be restored |
+| Schema Documentation | ❌ No schema matrix | ⚠️ Must be restored |
+| Workflow Integration | ❌ No pipeline examples | ⚠️ Must be restored |
+| Error Handling Context | ❌ Limited error documentation | ⚠️ Must be enhanced |
+
+### Risk Assessment
+**Severity: HIGH** - Without mandatory schema validation:
+- ❌ **Data corruption risk**: Invalid JSON could propagate through system
+- ❌ **Toolchain fragility**: Downstream tools may fail on malformed inputs
+- ❌ **Debugging complexity**: Errors become harder to trace without validation context
+- ❌ **Maintenance burden**: New developers won't understand validation requirements
+
+## Recommended Remediation
+
+### 1. Restore Mandatory Framework Documentation
+Add this section to v3.8 system prompt:
+
+```markdown
+### 2.4 JSON Schema Validation Framework (RESTORED)
+
+**MANDATORY REQUIREMENT:** All tool outputs MUST validate against schemas before use.
+
+**Schema Validation Matrix:**
+| Tool Category | Schema File | Required Fields | Validation Timing |
+|---------------|-------------|-----------------|-------------------|
+| Metadata Tools (`ppt_get_info`, `ppt_get_slide_info`) | `ppt_get_info.schema.json` | `tool_version`, `schema_version`, `presentation_version`, `slide_count` | Before any mutation |
+| Probe Tools (`ppt_capability_probe`) | `ppt_capability_probe.schema.json` | `tool_version`, `schema_version`, `probe_timestamp`, `capabilities` | Before content population |
+| Mutating Tools (all others) | Tool-specific schema | `status`, `file`, `presentation_version_before/after` | After each operation |
+
+**Validation Workflow:**
+```bash
+# Standard validation pipeline for ALL tool outputs
+uv run tools/ppt_get_info.py --file work.pptx --json > raw.json
+uv run tools/ppt_json_adapter.py --schema schemas/ppt_get_info.schema.json --input raw.json > validated.json
+```
+
+**Exit Code Protocol:**
+- `0`: Success (valid and normalized)
+- `2`: Validation Error (schema validation failed)
+- `3`: Input Load Error (could not read input file)
+- `5`: Schema Load Error (could not read schema file)
+```
+
+### 2. Enhance Tool Documentation
+Update all tool docstrings to reference schema validation:
+
+```python
+# Example enhancement for ppt_add_shape.py
+parser.epilog = """
+SCHEMA VALIDATION:
+  This tool's output MUST be validated with:
+  uv run tools/ppt_json_adapter.py --schema schemas/ppt_add_shape.schema.json --input output.json
+
+  Exit code 2 indicates schema validation failure - check required fields and data types.
+"""
+```
+
+### 3. Add Validation to Workflow Templates
+Update workflow templates to include mandatory validation steps:
+
+```bash
+# Enhanced workflow template example
+# Step 1: Get slide info
+uv run tools/ppt_get_slide_info.py --file work.pptx --slide 2 --json > slide2_raw.json
+
+# Step 2: MANDATORY validation
+uv run tools/ppt_json_adapter.py --schema schemas/ppt_get_slide_info.schema.json --input slide2_raw.json > slide2_validated.json
+
+# Step 3: Use validated output
+SHAPE_COUNT=$(cat slide2_validated.json | jq '.shape_count')
+```
+
+## Conclusion
+
+The **JSON Schema Validation Framework regression remains critical** and must be addressed in v3.8. While the implementation capability exists in `ppt_json_adapter.py`, the comprehensive framework documentation, mandatory requirements, and workflow integration from v3.1 are still missing from the system prompt. 
+
+This gap poses significant data integrity risks and undermines the system's reliability. The recommended remediation restores the mandatory validation framework while leveraging the enhanced capabilities of the current validation tool.
+
+**Recommendation:** Prioritize this fix for v3.8 release as it impacts core system integrity and data reliability across all presentation engineering operations.
 
 ---
 
