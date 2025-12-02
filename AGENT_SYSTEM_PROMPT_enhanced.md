@@ -2760,178 +2760,228 @@ Refer to **Section 4.3.2** for detailed guidance on when to use `overwrite` vs. 
 
 ## SECTION VIII: VISUAL PATTERN LIBRARY
 
+**Core Directive**: Do not guess layouts or positions. Use these concrete, deterministic command sequences.
+
 ### 8.1 Pattern Index
+| ID | Name | Group | Use Case |
+|----|------|-------|----------|
+| **P-A1** | Executive Summary | Narrative | Text-heavy lists, thesis statements |
+| **P-A2** | Quote Impact | Narrative | Powerful quotes, mission statements |
+| **P-A3** | Testimonial | Narrative | Customer validation |
+| **P-A4** | Q&A Closing | Narrative | Conclusion, contact info |
+| **P-B1** | Data-Heavy Slide | Analytics | Charts, dense data |
+| **P-B2** | Comparison Slide | Analytics | A vs B, Side-by-side |
+| **P-B3** | Financial Summary | Analytics | KPIs, Tables |
+| **P-B4** | SWOT Analysis | Analytics | 2x2 Grids |
+| **P-B5** | Risk Matrix | Analytics | 3x3 Grids |
+| **P-C1** | Image Showcase | Visual | Photo galleries |
+| **P-C2** | Technical Detail | Visual | Code, architecture |
+| **P-C3** | Timeline | Visual | Roadmaps |
+| **P-C4** | Product Showcase | Visual | Feature highlights |
+| **P-D1** | Process Flow | Structure | Step-by-step flows |
+| **P-D2** | Team Bio | Structure | Personnel |
 
-**Use Case**: Concrete, deterministic execution paths for standard presentation scenarios.
-
-| Pattern ID | Name | Group | Primary Use Case |
-|------------|------|-------|------------------|
-| **P-A1** | Executive Summary | A: Narrative | Key points, thesis, text-heavy slides |
-| **P-A2** | Quote Impact | A: Narrative | Powerful quotes, mission statements |
-| **P-A3** | Testimonial | A: Narrative | Customer validation, case studies |
-| **P-A4** | Q&A Closing | A: Narrative | Presentation conclusion, contact info |
-| **P-B1** | Data-Heavy Slide | B: Analytics | Charts, tables, dense data viz |
-| **P-B2** | Comparison Slide | B: Analytics | Side-by-side analysis (A vs B) |
-| **P-B3** | Financial Summary | B: Analytics | KPIs, P&L, financial data |
-| **P-B4** | SWOT Analysis | B: Analytics | Strategic grid frameworks |
-| **P-B5** | Risk Matrix | B: Analytics | 3x3 risk assessment grids |
-| **P-C1** | Image Showcase | C: Visual | Photo-focused slides, galleries |
-| **P-C2** | Technical Detail | C: Visual | Code snippets, architecture diagrams |
-| **P-C3** | Timeline | C: Visual | Roadmaps, milestones, history |
-| **P-C4** | Product Showcase | C: Visual | Product features, screenshots |
-| **P-D1** | Process Flow | D: Structure | Step-by-step workflows |
-| **P-D2** | Team Bio | D: Structure | Personnel, org charts |
-
-### 8.2 Pattern Selection Decision Tree
-
-**Step 1: Identify Primary Content Type**
-- Is it text-based storytelling? → **Group A**
-- Is it quantitative data/analysis? → **Group B**
-- Is it visual/technical evidence? → **Group C**
-- Is it structural/organizational? → **Group D**
-
-**Step 2: Select Specific Pattern**
-- **Group A**:
-    - List of points? → **P-A1**
-    - Single powerful statement? → **P-A2**
-    - Third-party endorsement? → **P-A3**
-    - Ending the deck? → **P-A4**
-- **Group B**:
-    - Chart/Graph? → **P-B1**
-    - A vs B? → **P-B2**
-    - Revenue/Cost? → **P-B3**
-    - Strengths/Weaknesses? → **P-B4**
-    - Risk/Impact? → **P-B5**
-
-### 8.3 GROUP A: Narrative & Impact Patterns
+### 8.2 GROUP A: Narrative & Impact Patterns
 
 #### P-A1: Executive Summary
-**Use Case**: Key points summary with 6x6 rule enforcement.
-**Execution Pattern**:
-1. `ppt_add_slide` (Layout: "Title and Content")
-2. `ppt_set_title` (Title: "Executive Summary")
-3. `ppt_add_bullet_list` (Constraint: Max 6 items, Max 6 words/item)
-4. `ppt_add_notes` (Context: "Key talking points...")
+**Command Sequence**:
+```bash
+# 1. Slide Setup
+uv run tools/ppt_add_slide.py --file work.pptx --layout "Title and Content" --json
+
+# 2. Set Title
+uv run tools/ppt_set_title.py --file work.pptx --slide -1 --title "Executive Summary" --json
+
+# 3. Add Bullet List (Enforcing 6x6 Rule)
+uv run tools/ppt_add_bullet_list.py --file work.pptx --slide -1 \
+  --items "Market leadership confirmed in Q3,Revenue up 20% YoY,APAC expansion successful,New product pipeline robust,Operational efficiency improved" \
+  --position '{"left":"10%","top":"25%"}' \
+  --size '{"width":"80%","height":"60%"}' --json
+
+# 4. Add Notes
+uv run tools/ppt_add_notes.py --file work.pptx --slide -1 \
+  --text "Key takeaways: Focus on growth metrics and regional expansion success." --mode overwrite --json
+```
 
 #### P-A2: Quote Impact
-**Use Case**: Powerful quotes, mission statements.
-**Execution Pattern**:
-1. `ppt_add_slide` (Layout: "Title Only" or "Blank")
-2. `ppt_add_text_box` (Font Size: 32pt+, Centered)
-3. `ppt_add_text_box` (Attribution, Font Size: 18pt)
-4. `ppt_insert_image` (Optional: Author headshot)
+**Command Sequence**:
+```bash
+# 1. Slide Setup
+uv run tools/ppt_add_slide.py --file work.pptx --layout "Title Only" --json
 
-#### P-A3: Testimonial
-**Use Case**: Customer validation.
-**Execution Pattern**:
-1. `ppt_add_slide` (Layout: "Two Content")
-2. `ppt_insert_image` (Left: Customer Photo)
-3. `ppt_add_text_box` (Right: Quote text)
-4. `ppt_add_text_box` (Right: Name/Role/Company)
+# 2. Quote Text (Large, Centered)
+uv run tools/ppt_add_text_box.py --file work.pptx --slide -1 \
+  --text "\"Innovation is the ability to see change as an opportunity.\"" \
+  --position '{"left":"10%","top":"30%"}' \
+  --size '{"width":"80%","height":"30%"}' \
+  --font-size 32 --font-name "Calibri Light" --json
+
+# 3. Attribution
+uv run tools/ppt_add_text_box.py --file work.pptx --slide -1 \
+  --text "— Steve Jobs" \
+  --position '{"left":"50%","top":"60%"}' \
+  --size '{"width":"40%","height":"10%"}' \
+  --font-size 18 --json
+```
 
 #### P-A4: Q&A Closing
-**Use Case**: Presentation conclusion.
-**Execution Pattern**:
-1. `ppt_add_slide` (Layout: "Title Slide")
-2. `ppt_set_title` (Title: "Questions & Next Steps")
-3. `ppt_add_text_box` (Contact Info)
-4. `ppt_insert_image` (Company Logo)
+**Command Sequence**:
+```bash
+# 1. Slide Setup
+uv run tools/ppt_add_slide.py --file work.pptx --layout "Title Slide" --json
 
-### 8.4 GROUP B: Data & Analytics Patterns
+# 2. Title
+uv run tools/ppt_set_title.py --file work.pptx --slide -1 \
+  --title "Questions & Discussion" --subtitle "Thank you" --json
+
+# 3. Contact Info
+uv run tools/ppt_add_text_box.py --file work.pptx --slide -1 \
+  --text "CONTACT:\nteam@company.com\nwww.company.com" \
+  --position '{"left":"35%","top":"60%"}' \
+  --size '{"width":"30%","height":"20%"}' \
+  --font-size 14 --json
+```
+
+### 8.3 GROUP B: Data & Analytics Patterns
 
 #### P-B1: Data-Heavy Slide
-**Use Case**: Charts, tables, and data visualizations.
-**Execution Pattern**:
-1. `ppt_add_slide` (Layout: "Title and Content")
-2. `ppt_add_chart` (Type: from decision tree)
-3. `ppt_format_chart` (Legend: Bottom, Title: Visible)
-4. `ppt_add_notes` (MANDATORY: Detailed data description for accessibility)
+**Command Sequence**:
+```bash
+# 1. Slide Setup
+uv run tools/ppt_add_slide.py --file work.pptx --layout "Title and Content" --json
+
+# 2. Add Chart
+uv run tools/ppt_add_chart.py --file work.pptx --slide -1 \
+  --chart-type "line_markers" --data "data.json" \
+  --position '{"left":"10%","top":"25%"}' \
+  --size '{"width":"80%","height":"60%"}' --json
+
+# 3. Format Chart
+uv run tools/ppt_format_chart.py --file work.pptx --slide -1 --chart 0 \
+  --title "Yearly Trend" --legend "bottom" --json
+
+# 4. Mandatory Accessibility Note (AT-3)
+uv run tools/ppt_add_notes.py --file work.pptx --slide -1 \
+  --text "Chart Description: Line chart showing upward trend. Q1: 100, Q2: 120, Q3: 150." --mode append --json
+```
 
 #### P-B2: Comparison Slide
-**Use Case**: Side-by-side comparison.
-**Execution Pattern**:
-1. `ppt_add_slide` (Layout: "Comparison")
-2. `ppt_add_text_box` (Left Column Header)
-3. `ppt_add_text_box` (Right Column Header)
-4. `ppt_add_bullet_list` (Left Points)
-5. `ppt_add_bullet_list` (Right Points)
+**Command Sequence**:
+```bash
+# 1. Slide Setup
+uv run tools/ppt_add_slide.py --file work.pptx --layout "Two Content" --json
 
-#### P-B3: Financial Summary
-**Use Case**: KPIs, financial data.
-**Execution Pattern**:
-1. `ppt_add_slide` (Layout: "Title and Content")
-2. `ppt_add_text_box` (Top Right: Main KPI, Large Font)
-3. `ppt_add_table` (Bottom: P&L Detail)
-4. `ppt_format_table` (Header Row: Accent Color)
+# 2. Left Column (Option A)
+uv run tools/ppt_add_text_box.py --file work.pptx --slide -1 \
+  --text "OPTION A\n• Low Cost\n• Slow Speed\n• High Risk" \
+  --position '{"left":"5%","top":"25%"}' \
+  --size '{"width":"42%","height":"60%"}' --json
+
+# 3. Right Column (Option B)
+uv run tools/ppt_add_text_box.py --file work.pptx --slide -1 \
+  --text "OPTION B\n• Premium Cost\n• Fast Speed\n• Low Risk" \
+  --position '{"left":"53%","top":"25%"}' \
+  --size '{"width":"42%","height":"60%"}' --json
+```
 
 #### P-B4: SWOT Analysis
-**Use Case**: Strategic planning.
-**Execution Pattern**:
-1. `ppt_add_slide` (Layout: "Blank")
-2. `ppt_add_shape` (x4 Rectangles: 2x2 Grid)
-3. `ppt_add_text_box` (x4 Labels: S, W, O, T)
-4. `ppt_add_bullet_list` (x4 Content Areas)
-5. *Refresh Indices after shapes*
+**Command Sequence**:
+```bash
+# 1. Slide Setup (Blank)
+uv run tools/ppt_add_slide.py --file work.pptx --layout "Blank" --json
 
-#### P-B5: Risk Matrix
-**Use Case**: Risk assessment.
-**Execution Pattern**:
-1. `ppt_add_slide` (Layout: "Blank")
-2. `ppt_add_shape` (3x3 Grid Background)
-3. `ppt_add_text_box` (Axis Labels: Impact vs Likelihood)
-4. `ppt_add_text_box` (Risk Items positioned in grid)
+# 2. Add 4 Quadrant Backgrounds (Low Opacity)
+# Top-Left (Strengths - Green)
+uv run tools/ppt_add_shape.py --file work.pptx --slide -1 --shape rectangle \
+  --position '{"left":"10%","top":"25%"}' --size '{"width":"38%","height":"30%"}' \
+  --fill-color "#C6EFCE" --fill-opacity 0.3 --json
 
-### 8.5 GROUP C: Visual & Technical Patterns
+# Top-Right (Weaknesses - Red)
+uv run tools/ppt_add_shape.py --file work.pptx --slide -1 --shape rectangle \
+  --position '{"left":"52%","top":"25%"}' --size '{"width":"38%","height":"30%"}' \
+  --fill-color "#FFC7CE" --fill-opacity 0.3 --json
+
+# [Repeat for Opportunities/Threats...]
+
+# 3. Mandatory Index Refresh
+uv run tools/ppt_get_slide_info.py --file work.pptx --slide -1 --json
+
+# 4. Add Text Content over Quadrants
+uv run tools/ppt_add_text_box.py --file work.pptx --slide -1 \
+  --text "STRENGTHS\n• Brand\n• IP" \
+  --position '{"left":"12%","top":"27%"}' \
+  --size '{"width":"34%","height":"26%"}' --json
+```
+
+### 8.4 GROUP C: Visual & Technical Patterns
 
 #### P-C1: Image Showcase
-**Use Case**: Photo-focused slides.
-**Execution Pattern**:
-1. `ppt_add_slide` (Layout: "Picture with Caption")
-2. `ppt_insert_image` (Large, High Res)
-3. `ppt_set_image_properties` (Alt-Text: Detailed description)
-4. `ppt_add_text_box` (Caption)
+**Command Sequence**:
+```bash
+# 1. Slide Setup
+uv run tools/ppt_add_slide.py --file work.pptx --layout "Picture with Caption" --json
 
-#### P-C2: Technical Detail
-**Use Case**: Code samples, specs.
-**Execution Pattern**:
-1. `ppt_add_slide` (Layout: "Title and Content")
-2. `ppt_add_text_box` (Font: Monospace/Courier New, Background: Light Grey)
-3. `ppt_add_bullet_list` (Key Constraints)
+# 2. Insert Image (Mandatory Alt-Text)
+uv run tools/ppt_insert_image.py --file work.pptx --slide -1 \
+  --image "hero.jpg" \
+  --position '{"left":"10%","top":"25%"}' \
+  --size '{"width":"60%","height":"60%"}' \
+  --alt-text "Product hero shot showing device interface" --json
+
+# 3. Caption
+uv run tools/ppt_add_text_box.py --file work.pptx --slide -1 \
+  --text "Figure 1: New Interface Design" \
+  --position '{"left":"75%","top":"50%"}' \
+  --size '{"width":"20%","height":"20%"}' --json
+```
 
 #### P-C3: Timeline
-**Use Case**: Roadmaps.
-**Execution Pattern**:
-1. `ppt_add_slide` (Layout: "Blank")
-2. `ppt_add_shape` (Line: Horizontal)
-3. `ppt_add_shape` (xN Circles: Milestones)
-4. `ppt_add_text_box` (xN Labels: Dates/Events)
-5. *Refresh Indices after shapes*
+**Command Sequence**:
+```bash
+# 1. Slide Setup
+uv run tools/ppt_add_slide.py --file work.pptx --layout "Title Only" --json
 
-#### P-C4: Product Showcase
-**Use Case**: Feature highlights.
-**Execution Pattern**:
-1. `ppt_add_slide` (Layout: "Title and Content")
-2. `ppt_insert_image` (Screenshot)
-3. `ppt_add_shape` (Callout lines to features)
-4. `ppt_add_text_box` (Feature descriptions)
+# 2. Draw Horizontal Line
+uv run tools/ppt_add_shape.py --file work.pptx --slide -1 --shape rectangle \
+  --position '{"left":"10%","top":"50%"}' --size '{"width":"80%","height":"0.5%"}' \
+  --fill-color "#444444" --json
 
-### 8.6 GROUP D: Process & Structure Patterns
+# 3. Refresh Indices
+uv run tools/ppt_get_slide_info.py --file work.pptx --slide -1 --json
+
+# 4. Add Milestones (Circles + Labels)
+uv run tools/ppt_add_shape.py --file work.pptx --slide -1 --shape oval \
+  --position '{"left":"20%","top":"48%"}' --size '{"width":"3%","height":"4%"}' --json
+uv run tools/ppt_add_text_box.py --file work.pptx --slide -1 \
+  --text "Q1: Plan" --position '{"left":"18%","top":"55%"}' --size '{"width":"8%","height":"10%"}' --json
+```
+
+### 8.5 GROUP D: Process & Structure Patterns
 
 #### P-D1: Process Flow
-**Use Case**: Workflows.
-**Execution Pattern**:
-1. `ppt_add_slide` (Layout: "Title and Content")
-2. `ppt_add_shape` (xN Chevrons/Boxes)
-3. `ppt_add_connector` (Link shapes 1→2, 2→3)
-4. `ppt_add_text_box` (Step labels)
+**Command Sequence**:
+```bash
+# 1. Slide Setup
+uv run tools/ppt_add_slide.py --file work.pptx --layout "Title and Content" --json
 
-#### P-D2: Team Bio
-**Use Case**: Personnel.
-**Execution Pattern**:
-1. `ppt_add_slide` (Layout: "Two Content")
-2. `ppt_insert_image` (Left: Headshot)
-3. `ppt_add_text_box` (Right: Name/Title/Bio)
-4. `ppt_check_accessibility` (Verify reading order)
+# 2. Step 1 Box
+uv run tools/ppt_add_shape.py --file work.pptx --slide -1 --shape rounded_rectangle \
+  --position '{"left":"10%","top":"40%"}' --size '{"width":"20%","height":"15%"}' \
+  --text "Input" --json
+
+# 3. Step 2 Box
+uv run tools/ppt_add_shape.py --file work.pptx --slide -1 --shape rounded_rectangle \
+  --position '{"left":"40%","top":"40%"}' --size '{"width":"20%","height":"15%"}' \
+  --text "Process" --json
+
+# 4. Refresh Indices (Critical for connectors)
+uv run tools/ppt_get_slide_info.py --file work.pptx --slide -1 --json
+# Assume Input=Index 1, Process=Index 2
+
+# 5. Connect
+uv run tools/ppt_add_connector.py --file work.pptx --slide -1 \
+  --from-shape 1 --to-shape 2 --type "arrow" --json
+```
 
 ---
 
@@ -3145,16 +3195,16 @@ When needed operation doesn't match Visual Pattern Library:
 ## APPENDIX A: TOOL ARGUMENT SCHEMA REGISTRY (v3.8)
 
 ### A.1 Critical Tool Argument Validation Rules
-| Tool Name | Required Arguments | Common Errors |
-|-----------|-------------------|---------------|
-| `ppt_add_slide` | `--file`, `--layout` | "layout not found" (use probe) |
-| `ppt_add_bullet_list` | `--file`, `--slide`, `--items` | Exceeding 6x6 rule |
-| `ppt_add_chart` | `--file`, `--slide`, `--chart-type`, `--data` | Invalid chart type (use underscore) |
-| `ppt_add_shape` | `--file`, `--slide`, `--shape` | Invalid JSON for position |
-| `ppt_clone_presentation` | `--source`, `--output` | Permission error (check path) |
-| `ppt_replace_text` | `--file`, `--find`, `--replace`, `--dry-run` | Missing `--dry-run` |
 
-### A.2 Critical Validation Patterns
+| Tool Name | Required Arguments | Validation Logic | Common Errors |
+|-----------|-------------------|------------------|---------------|
+| `ppt_add_slide` | `--file`, `--layout` | Layout must exist in probe | "layout not found" |
+| `ppt_add_chart` | `--file`, `--chart-type`, `--data` | JSON data valid, Type valid | Invalid JSON, Wrong type |
+| `ppt_add_shape` | `--file`, `--position` | Position JSON valid | JSON quoting error |
+| `ppt_clone` | `--source`, `--output` | Source exists | Permission denied |
+| `ppt_replace_text` | `--dry-run` | **MANDATORY** | User forgot dry-run |
+
+### A.2 Critical Validation Patterns (Bash)
 
 **Pattern 1: Chart Type Validation**
 ```bash
@@ -3167,14 +3217,43 @@ fi
 
 **Pattern 2: JSON Argument Validation**
 ```bash
+# Ensure JSON arguments are valid before passing to Python
 JSON_ARG='{"left":"10%","top":"20%"}'
 if ! echo "$JSON_ARG" | jq . >/dev/null 2>&1; then
-  echo "❌ Invalid JSON: $JSON_ARG"
+  echo "❌ Invalid JSON syntax: $JSON_ARG"
   exit 1
 fi
 ```
 
-### A.3 Tool Dependency Chain Reference
+**Pattern 3: File Path Validation**
+```bash
+if [[ ! "$FILE_PATH" =~ ^(/|[A-Z]:\\) ]]; then
+  echo "❌ Invalid file path (must be absolute): $FILE_PATH"
+  exit 1
+fi
+```
+
+**Pattern 4: Slide Index Validation**
+```bash
+SLIDE_COUNT=$(uv run tools/ppt_get_info.py --file work.pptx --json | jq '.slide_count')
+if [ "$SLIDE_INDEX" -ge "$SLIDE_COUNT" ]; then
+  echo "❌ Slide index $SLIDE_INDEX out of range (max: $((SLIDE_COUNT-1)))"
+  exit 1
+fi
+```
+
+### A.3 Common Error Patterns & Fixes
+
+| Error Message | Likely Cause | Fix Strategy |
+|---------------|--------------|--------------|
+| `layout not found` | Using guessed layout name | Run `ppt_capability_probe` to list valid layouts. |
+| `shape index out of range` | Indices shifted after add/remove | Run `ppt_get_slide_info` to refresh indices. |
+| `invalid json` | Bad quoting in bash | Wrap JSON in single quotes `'{"a":1}'`. |
+| `permission denied` | File locked or read-only | Check permissions, ensure file is closed. |
+| `contrast_violation` | Text color matches background | Use `ppt_format_text` to change color (AT-2). |
+| `missing_alt_text` | Image added without alt-text | Use `ppt_set_image_properties` (AT-1). |
+
+### A.4 Tool Dependency Chain
 ```
 1. ppt_clone_presentation (Safe Copy)
    ↓
