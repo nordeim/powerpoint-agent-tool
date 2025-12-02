@@ -1102,7 +1102,102 @@ uv run tools/ppt_extract_notes.py \
 ## SECTION V: TOOL ECOSYSTEM (v3.6)
 
 ### 5.1 Complete Tool Catalog (42 Tools)
-*Same as v3.5 - no new tools added*
+
+### Domain 1: Creation & Architecture
+
+| Tool                         | Purpose                      | Critical Arguments                                 |
+|------------------------------|------------------------------|----------------------------------------------------|
+| ppt_create_new.py            | Initialize blank deck        | --output PATH, --slides N, --layout NAME           |
+| ppt_create_from_template.py  | Create from master template  | --template PATH, --output PATH                     |
+| ppt_create_from_structure.py | Generate from JSON definition| --structure PATH, --output PATH                    |
+| ppt_clone_presentation.py    | Create work copy             | --source PATH, --output PATH                       |
+
+---
+
+### Domain 2: Slide Management
+
+| Tool                         | Purpose           | Critical Arguments                                      |
+|------------------------------|-------------------|---------------------------------------------------------|
+| ppt_add_slide.py             | Insert slide      | --file PATH, --layout NAME, --index N                   |
+| ppt_delete_slide.py          | Remove slide ⚠️   | --file PATH, --index N, --approval-token                |
+| ppt_duplicate_slide.py       | Clone slide       | --file PATH, --index N                                  |
+| ppt_reorder_slides.py        | Move slide        | --file PATH, --from-index N, --to-index N               |
+| ppt_set_slide_layout.py      | Change layout ⚠️  | --file PATH, --slide N, --layout NAME                   |
+| ppt_set_footer.py            | Configure footer  | --file PATH, --text TEXT, --show-number                 |
+| ppt_merge_presentations.py   | Combine decks     | --sources JSON, --output PATH                           |
+
+---
+
+### Domain 3: Text & Content
+
+| Tool                         | Purpose           | Critical Arguments                                      |
+|------------------------------|-------------------|---------------------------------------------------------|
+| ppt_set_title.py             | Set title/subtitle| --file PATH, --slide N, --title TEXT                    |
+| ppt_add_text_box.py          | Add text box      | --file PATH, --slide N, --text TEXT, --position JSON    |
+| ppt_add_bullet_list.py       | Add bullet list   | --file PATH, --slide N, --items CSV, --position JSON    |
+| ppt_format_text.py           | Style text        | --file PATH, --slide N, --shape N, --font-name, --font-size |
+| ppt_replace_text.py          | Find/replace      | --file PATH, --find TEXT, --replace TEXT, --dry-run     |
+| ppt_add_notes.py             | Speaker notes     | --file PATH, --slide N, --text TEXT, --mode append/overwrite/prepend |
+| ppt_extract_notes.py         | Extract notes     | --file PATH                                             |
+| ppt_search_content.py        | Search text       | --file PATH, --query TEXT                               |
+
+---
+
+### Domain 4: Images & Media
+
+| Tool                         | Purpose           | Critical Arguments                                      |
+|------------------------------|-------------------|---------------------------------------------------------|
+| ppt_insert_image.py          | Insert image      | --file PATH, --slide N, --image PATH, --alt-text TEXT   |
+| ppt_replace_image.py         | Swap images       | --file PATH, --slide N, --old-image NAME, --new-image PATH |
+| ppt_crop_image.py            | Crop image        | --file PATH, --slide N, --shape N, --left/right/top/bottom |
+| ppt_set_image_properties.py  | Set alt text      | --file PATH, --slide N, --shape N, --alt-text TEXT      |
+
+---
+
+### Domain 5: Visual Design
+
+| Tool                         | Purpose           | Critical Arguments                                      |
+|------------------------------|-------------------|---------------------------------------------------------|
+| ppt_add_shape.py             | Add shapes        | --file PATH, --slide N, --shape TYPE, --position JSON, --fill-opacity |
+| ppt_format_shape.py          | Style shapes      | --file PATH, --slide N, --shape N, --fill-color, --fill-opacity |
+| ppt_add_connector.py         | Connect shapes    | --file PATH, --slide N, --from-shape N, --to-shape N    |
+| ppt_set_background.py        | Set background    | --file PATH, --slide N, --color HEX, --image PATH       |
+| ppt_set_z_order.py           | Manage layers     | --file PATH, --slide N, --shape N, --action {bring_to_front,send_to_back} |
+| ppt_remove_shape.py          | Delete shape ⚠️   | --file PATH, --slide N, --shape N, --dry-run            |
+
+---
+
+### Domain 6: Data Visualization
+
+| Tool                         | Purpose           | Critical Arguments                                      |
+|------------------------------|-------------------|---------------------------------------------------------|
+| ppt_add_chart.py             | Add chart         | --file PATH, --slide N, --chart-type TYPE, --data PATH  |
+| ppt_update_chart_data.py     | Update chart data | --file PATH, --slide N, --chart N, --data PATH          |
+| ppt_format_chart.py          | Style chart       | --file PATH, --slide N, --chart N, --title, --legend    |
+| ppt_add_table.py             | Add table         | --file PATH, --slide N, --rows N, --cols N, --data PATH |
+| ppt_format_table.py          | Style table       | --file PATH, --slide N, --shape N, --header-fill        |
+
+---
+
+### Domain 7: Inspection & Analysis
+
+| Tool                         | Purpose           | Critical Arguments                                      |
+|------------------------------|-------------------|---------------------------------------------------------|
+| ppt_get_info.py              | Get metadata + version | --file PATH                                        |
+| ppt_get_slide_info.py        | Inspect slide shapes | --file PATH, --slide N                              |
+| ppt_capability_probe.py      | Deep inspection    | --file PATH, --deep                                    |
+
+---
+
+### Domain 8: Validation & Export
+
+| Tool                         | Purpose           | Critical Arguments                                      |
+|------------------------------|-------------------|---------------------------------------------------------|
+| ppt_validate_presentation.py | Health check      | --file PATH, --policy strict/standard                   |
+| ppt_check_accessibility.py   | WCAG audit        | --file PATH                                             |
+| ppt_export_images.py         | Export as images  | --file PATH, --output-dir PATH, --format png/jpg        |
+| ppt_export_pdf.py            | Export as PDF     | --file PATH, --output PATH                              |
+| ppt_json_adapter.py          | Validate JSON output | --schema PATH, --input PATH                          |
 
 ### 5.2 Position & Size Syntax Reference
 // Percentage-based (recommended for responsive layouts)
