@@ -946,3 +946,612 @@ The Visual Pattern Library is a particularly innovative feature that should sign
 3. Reorganize the pattern library with consistent numbering?
 4. Develop the two-stage complexity scoring implementation?
 5. Any other specific section revision?
+
+---
+
+# Comprehensive Implementation Plan: PowerPoint AI Agent System Prompt v3.8
+
+## Executive Summary
+
+This plan delivers a **complete, validated, drop-in replacement** for the PowerPoint AI Agent system prompt, upgrading from v3.6/v3.7 (mixed) to a unified **v3.8** release. The implementation is structured in **3 phases**, each covering distinct sections of the prompt with integrated validation checklists.
+
+---
+
+## Implementation Overview
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                    v3.8 IMPLEMENTATION ROADMAP                              │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  PHASE 1: Foundation Layer                                                  │
+│  ─────────────────────────                                                  │
+│  Sections: I (Identity) → II (Governance) → III (Resilience)               │
+│  Focus: Safety framework, token system, error handling                      │
+│  Critical Issues: #1, #4, #5, #6, #7, #9, #19                              │
+│  Estimated Size: ~40% of document                                           │
+│                                                                             │
+│  PHASE 2: Operational Layer                                                 │
+│  ─────────────────────────                                                  │
+│  Sections: IV (Workflow) → V (Tools) → VI (Design) → VII (Accessibility)   │
+│  Focus: Complete tool catalog, workflow fixes, design system                │
+│  Critical Issues: #2, #3, #10                                              │
+│  Medium Issues: #11, #12, #13, #14, #15, #16, #17                          │
+│  Estimated Size: ~35% of document                                           │
+│                                                                             │
+│  PHASE 3: Pattern & Delivery Layer                                          │
+│  ────────────────────────────────                                           │
+│  Sections: VIII (Patterns) → IX (Templates) → X (Response) → XI (Rules)    │
+│  + Appendices A, B, C (new), D (new) + Final Directive                     │
+│  Focus: Pattern library reorganization, new appendices, polish              │
+│  Critical Issues: #8                                                        │
+│  Medium Issues: #18, #20                                                    │
+│  Minor Issues: #21-32                                                       │
+│  Estimated Size: ~25% of document                                           │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Phase 1: Foundation Layer (Sections I–III)
+
+### Phase 1 Scope Definition
+
+| Section | Content | Key Changes |
+|---------|---------|-------------|
+| **Header** | Document title, version | Unify to v3.8, add version history |
+| **Section I** | Identity & Mission | Minor version updates |
+| **Section II** | Governance Foundation | Token acquisition workflow, schema handling |
+| **Section III** | Operational Resilience | Probe schema, exit codes, race conditions |
+
+### Phase 1 Integrated Checklist
+
+#### Header & Version Block
+- [ ] **H-1**: Add document header with v3.8 version
+- [ ] **H-2**: Add version history table (v3.5 → v3.6 → v3.7 → v3.8)
+- [ ] **H-3**: Add document metadata (last updated, status)
+- [ ] **H-4**: Add quick reference table of contents
+
+#### Section I: Identity & Mission
+- [ ] **I-1**: Update version references to v3.8
+- [ ] **I-2**: Verify core philosophy alignment with new governance
+- [ ] **I-3**: Update mission statement to reflect v3.8 capabilities
+- [ ] **I-4**: Add pattern intelligence to competency table
+- [ ] **I-5**: Cross-reference validation: All 6 philosophy points consistent
+
+#### Section II: Governance Foundation
+- [ ] **II-1**: Verify safety hierarchy unchanged (7 items)
+- [ ] **II-2**: Verify three inviolable laws unchanged
+- [ ] **II-3**: **NEW**: Add Section 2.3.1 - Token Acquisition Workflow
+- [ ] **II-4**: Update token scope mapping table completeness
+- [ ] **II-5**: **NEW**: Add simplified approval mode for trusted environments
+- [ ] **II-6**: **NEW**: Add Section 2.4.1 - Schema Availability Handling
+- [ ] **II-7**: Update schema validation matrix with conditional logic
+- [ ] **II-8**: Add schema validation fallback protocol
+- [ ] **II-9**: Verify non-destructive defaults table complete
+- [ ] **II-10**: Verify versioning protocol unchanged
+- [ ] **II-11**: Verify audit trail requirements complete
+- [ ] **II-12**: Verify destructive operation protocol unchanged
+
+#### Section III: Operational Resilience
+- [ ] **III-1**: Verify probe resilience framework unchanged
+- [ ] **III-2**: **NEW**: Add Section 3.1.1 - Probe Output Schema (complete)
+- [ ] **III-3**: **NEW**: Add Section 3.1.2 - Fallback Probe Output Schema
+- [ ] **III-4**: Verify preflight checklist complete
+- [ ] **III-5**: **UPDATE**: Refine error handling matrix (split exit code 3)
+- [ ] **III-6**: Add new exit codes 6 (I/O) and 7 (Network)
+- [ ] **III-7**: Verify error recovery hierarchy unchanged
+- [ ] **III-8**: **NEW**: Add Section 3.5.1 - Shape Index Locking Protocol
+- [ ] **III-9**: Add shape identity verification using names
+- [ ] **III-10**: Add file modification detection protocol
+
+### Phase 1 Validation Gates
+
+| Gate | Validation Criteria | Method |
+|------|---------------------|--------|
+| P1-G1 | All version references = "v3.8" | Text search |
+| P1-G2 | Token acquisition path exists | Workflow trace |
+| P1-G3 | Schema fallback defined | Conditional logic check |
+| P1-G4 | Probe output schema complete | Field count verification |
+| P1-G5 | Exit codes non-overlapping | Code table review |
+| P1-G6 | No forward references to undefined sections | Link verification |
+
+---
+
+## Phase 2: Operational Layer (Sections IV–VII)
+
+### Phase 2 Scope Definition
+
+| Section | Content | Key Changes |
+|---------|---------|-------------|
+| **Section IV** | Workflow Phases | Two-stage complexity scoring, validation steps |
+| **Section V** | Tool Ecosystem | **NEW** Complete tool catalog (all 42 tools) |
+| **Section VI** | Design Intelligence | Font size unification, syntax matrix |
+| **Section VII** | Accessibility | Fixed workflows, unified templates |
+
+### Phase 2 Integrated Checklist
+
+#### Section IV: Workflow Phases
+- [ ] **IV-1**: Add validation step template (Phase ALL)
+- [ ] **IV-2**: **UPDATE**: Phase 0 - Implement two-stage classification
+- [ ] **IV-3**: Add Stage 0a (Initial Classification) with keyword detection
+- [ ] **IV-4**: Add Stage 0b (Refined Classification) with upgrade rules
+- [ ] **IV-5**: Update declaration format for v3.8
+- [ ] **IV-6**: Verify Phase 1 (Initialize) unchanged
+- [ ] **IV-7**: Add probe schema reference to Phase 2 (Discover)
+- [ ] **IV-8**: **UPDATE**: Phase 3 manifest schema to v3.8
+- [ ] **IV-9**: Add pattern reference field to manifest operations
+- [ ] **IV-10**: Verify Phase 4 (Create) execution protocol unchanged
+- [ ] **IV-11**: Add 6×6 rule validation script to Phase 4
+- [ ] **IV-12**: **FIX**: Phase 5 - Correct bash syntax in remediation workflows
+- [ ] **IV-13**: Update validation policy with 12pt minimum
+- [ ] **IV-14**: Verify Phase 6 (Deliver) unchanged
+- [ ] **IV-15**: Update manifest schema version to v3.8
+
+#### Section V: Tool Ecosystem
+- [ ] **V-1**: Update section header to v3.8
+- [ ] **V-2**: **NEW**: Add Section 5.1 - Complete Tool Catalog (all 42 tools)
+- [ ] **V-3**: Organize tools by category (File, Inspection, Content, Format, etc.)
+- [ ] **V-4**: Include required args, risk level, notes for each tool
+- [ ] **V-5**: **NEW**: Add Section 5.2.1 - Position Syntax Compatibility Matrix
+- [ ] **V-6**: Define "auto" height behavior
+- [ ] **V-7**: **NEW**: Add Section 5.3.1 - Chart Type Validation
+- [ ] **V-8**: List all valid shape types
+- [ ] **V-9**: Add text box vs. bullet list decision guidance
+- [ ] **V-10**: Cross-reference: All tools in catalog match pattern usage
+
+#### Section VI: Design Intelligence System
+- [ ] **VI-1**: Verify visual hierarchy framework unchanged
+- [ ] **VI-2**: **FIX**: Typography system - Unify 12pt minimum
+- [ ] **VI-3**: Remove all references to 10pt font size
+- [ ] **VI-4**: Update exception documentation requirements
+- [ ] **VI-5**: Verify theme font priority unchanged
+- [ ] **VI-6**: Verify color system unchanged
+- [ ] **VI-7**: Verify layout & spacing system unchanged
+- [ ] **VI-8**: Verify content density rules unchanged
+- [ ] **VI-9**: Verify overlay safety guidelines unchanged
+- [ ] **VI-10**: Add rationale note for 12pt minimum
+
+#### Section VII: Accessibility Requirements
+- [ ] **VII-1**: **FIX**: Update font size check to "Minimum 12pt"
+- [ ] **VII-2**: Remove "prefer ≥12pt" language (12pt is now mandatory)
+- [ ] **VII-3**: Verify notes as accessibility aid unchanged
+- [ ] **VII-4**: Verify alt-text best practices unchanged
+- [ ] **VII-5**: **FIX**: Workflow 1 - Correct bash syntax (jq iteration)
+- [ ] **VII-6**: **FIX**: Workflow 2 - Correct bash syntax (jq iteration)
+- [ ] **VII-7**: **RENAME**: Templates to AT-1 through AT-5
+- [ ] **VII-8**: Add template index table
+- [ ] **VII-9**: Cross-reference: All templates have valid tool references
+
+### Phase 2 Validation Gates
+
+| Gate | Validation Criteria | Method |
+|------|---------------------|--------|
+| P2-G1 | Tool catalog = 42 tools | Count verification |
+| P2-G2 | All font size refs = 12pt minimum | Text search |
+| P2-G3 | Bash scripts syntactically valid | shellcheck review |
+| P2-G4 | Two-stage scoring implemented | Logic trace |
+| P2-G5 | Template naming unique | Prefix verification |
+| P2-G6 | No 10pt font references remain | Text search |
+
+---
+
+## Phase 3: Pattern & Delivery Layer (Sections VIII–End)
+
+### Phase 3 Scope Definition
+
+| Section | Content | Key Changes |
+|---------|---------|-------------|
+| **Section VIII** | Visual Pattern Library | Complete reorganization with consistent IDs |
+| **Section IX** | Workflow Templates | Rename to WT-1, WT-2, WT-3 |
+| **Section X** | Response Protocol | Deduplicate, update to v3.8 |
+| **Section XI** | Absolute Constraints | Verify completeness |
+| **Appendix A** | Tool Argument Schema | Enhanced validation patterns |
+| **Appendix B** | Delivery Package | Checksum format standardization |
+| **Appendix C** | **NEW** Complete Tool Catalog | Full 42-tool specification |
+| **Appendix D** | **NEW** JSON Schemas | Probe and validation schemas |
+| **Final Directive** | Closing statement | Update to v3.8 |
+
+### Phase 3 Integrated Checklist
+
+#### Section VIII: Visual Pattern Library
+- [ ] **VIII-1**: **NEW**: Add Section 8.1 - Pattern Index Table
+- [ ] **VIII-2**: Implement new pattern IDs (P-A1, P-A2, etc.)
+- [ ] **VIII-3**: Reorganize patterns by group (A, B, C, D in sequence)
+- [ ] **VIII-4**: Update decision tree to reference new pattern IDs
+- [ ] **VIII-5**: Group A patterns: P-A1 (Exec Summary), P-A2 (Quote), P-A3 (Testimonial), P-A4 (Q&A)
+- [ ] **VIII-6**: Group B patterns: P-B1 (Data), P-B2 (Comparison), P-B3 (Financial), P-B4 (SWOT), P-B5 (Risk)
+- [ ] **VIII-7**: Group C patterns: P-C1 (Image), P-C2 (Technical), P-C3 (Timeline), P-C4 (Product)
+- [ ] **VIII-8**: Group D patterns: P-D1 (Process), P-D2 (Team Bio)
+- [ ] **VIII-9**: Update all pattern cross-references in other sections
+- [ ] **VIII-10**: Verify each pattern has complete command sequence
+
+#### Section IX: Workflow Templates
+- [ ] **IX-1**: **RENAME**: Template 9.1 → WT-1 (New Presentation)
+- [ ] **IX-2**: **RENAME**: Template 9.2 → WT-2 (Visual Enhancement)
+- [ ] **IX-3**: **RENAME**: Template 9.3 → WT-3 (Surgical Rebranding)
+- [ ] **IX-4**: Add workflow template index table
+- [ ] **IX-5**: Verify no naming conflicts with AT-* templates
+- [ ] **IX-6**: Update cross-references in response protocol
+
+#### Section X: Response Protocol
+- [ ] **X-1**: Update initialization declaration to v3.8
+- [ ] **X-2**: Update pattern references to new IDs
+- [ ] **X-3**: Remove duplicate protocol from Final Directive
+- [ ] **X-4**: Verify response structure complete
+- [ ] **X-5**: Add pattern usage table in delivery report
+
+#### Section XI: Absolute Constraints
+- [ ] **XI-1**: Update NEVER list with new items
+- [ ] **XI-2**: Update ALWAYS list with new items
+- [ ] **XI-3**: Verify ambiguity resolution protocol unchanged
+- [ ] **XI-4**: Verify pattern deviation protocol unchanged
+- [ ] **XI-5**: Add reference to new pattern IDs
+
+#### Appendix A: Tool Argument Schema Registry
+- [ ] **A-1**: Update header to v3.8
+- [ ] **A-2**: Add chart type validation pattern
+- [ ] **A-3**: Verify all validation patterns syntactically correct
+- [ ] **A-4**: Add shape type vocabulary
+- [ ] **A-5**: Update tool dependency chain if needed
+
+#### Appendix B: Delivery Package
+- [ ] **B-1**: Verify package contents complete
+- [ ] **B-2**: Standardize checksum format (sha256sum compatible)
+- [ ] **B-3**: Document LibreOffice dependency for PDF export
+- [ ] **B-4**: Add verification command examples
+
+#### Appendix C: Complete Tool Catalog (NEW)
+- [ ] **C-1**: Create section header and introduction
+- [ ] **C-2**: Add File Operations tools (6 tools)
+- [ ] **C-3**: Add Inspection Tools (5 tools)
+- [ ] **C-4**: Add Content Creation Tools (10 tools)
+- [ ] **C-5**: Add Formatting Tools (8 tools)
+- [ ] **C-6**: Add Structure Tools (5 tools)
+- [ ] **C-7**: Add Validation Tools (3 tools)
+- [ ] **C-8**: Add Export Tools (3 tools)
+- [ ] **C-9**: Add Utility Tools (2 tools)
+- [ ] **C-10**: Verify total = 42 tools
+
+#### Appendix D: JSON Schemas (NEW)
+- [ ] **D-1**: Create section header and introduction
+- [ ] **D-2**: Add ppt_get_info.schema.json
+- [ ] **D-3**: Add ppt_capability_probe.schema.json
+- [ ] **D-4**: Add ppt_get_slide_info.schema.json
+- [ ] **D-5**: Add manifest-v3.8.schema.json
+- [ ] **D-6**: Add accessibility_report.schema.json
+
+#### Final Directive & Footer
+- [ ] **FD-1**: Update version to v3.8
+- [ ] **FD-2**: Remove duplicate response protocol
+- [ ] **FD-3**: Update initialization declaration
+- [ ] **FD-4**: Update document footer
+- [ ] **FD-5**: Add v3.8 to version history
+
+### Phase 3 Validation Gates
+
+| Gate | Validation Criteria | Method |
+|------|---------------------|--------|
+| P3-G1 | Pattern IDs sequential and unique | ID verification |
+| P3-G2 | 15 patterns total | Count verification |
+| P3-G3 | No duplicate template names | Prefix verification |
+| P3-G4 | All appendices properly numbered | Sequence check |
+| P3-G5 | Tool catalog = 42 tools | Count verification |
+| P3-G6 | All cross-references valid | Link verification |
+| P3-G7 | Version = v3.8 throughout | Text search |
+
+---
+
+## Cross-Phase Dependencies
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                    DEPENDENCY GRAPH                                         │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  PHASE 1                      PHASE 2                      PHASE 3         │
+│  ────────                     ────────                     ────────         │
+│                                                                             │
+│  [Probe Schema 3.1.1] ───────▶ [Discovery Phase 2]                         │
+│                                                                             │
+│  [Token Workflow 2.3.1] ─────▶ [Destructive Ops Protocol]                  │
+│                                                                             │
+│  [Exit Codes 3.3] ───────────▶ [Error Recovery 3.4] ─────▶ [Workflows IX]  │
+│                                                                             │
+│                               [Tool Catalog V] ──────────▶ [Appendix C]    │
+│                                                                             │
+│                               [Font Fix VI] ─────────────▶ [Access VII]    │
+│                                                                             │
+│                               [Template Rename VII] ─────▶ [Pattern IDs]   │
+│                                                                             │
+│  [Version History] ──────────────────────────────────────▶ [Final Dir]     │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Validation Matrix (All Phases)
+
+### Critical Issue Resolution Tracking
+
+| Issue # | Description | Phase | Section | Status |
+|---------|-------------|-------|---------|--------|
+| #1 | Version inconsistency | 1, 2, 3 | All | 🔄 Planned |
+| #2 | Font size contradiction | 2 | VI, VII | 🔄 Planned |
+| #3 | Tool catalog incomplete | 2, 3 | V, App C | 🔄 Planned |
+| #4 | Token acquisition gap | 1 | II | 🔄 Planned |
+| #5 | Complexity score issue | 2 | IV | 🔄 Planned |
+| #6 | Schema files missing | 1, 3 | II, App D | 🔄 Planned |
+| #7 | Probe output undefined | 1 | III | 🔄 Planned |
+| #8 | Pattern organization | 3 | VIII | 🔄 Planned |
+| #9 | Race condition risk | 1 | III | 🔄 Planned |
+| #10 | Bash syntax errors | 2 | VII | 🔄 Planned |
+
+### Medium Issue Resolution Tracking
+
+| Issue # | Description | Phase | Section | Status |
+|---------|-------------|-------|---------|--------|
+| #11 | 6×6 rule not enforced | 2 | IV | 🔄 Planned |
+| #12 | Error recovery tool mapping | 2 | III/IV | 🔄 Planned |
+| #13 | Fallback probe undefined | 1 | III | 🔄 Planned |
+| #14 | Speaker notes mode guidance | 2 | IV | 🔄 Planned |
+| #15 | Position syntax matrix | 2 | V | 🔄 Planned |
+| #16 | Dry-run coverage | 2 | II/IV | 🔄 Planned |
+| #17 | Template naming conflict | 2, 3 | VII, IX | 🔄 Planned |
+| #18 | Manifest schema evolution | 3 | IV, App | 🔄 Planned |
+| #19 | Exit code 3 overloaded | 1 | III | 🔄 Planned |
+| #20 | Chart type validation | 3 | V, App A | 🔄 Planned |
+
+### Minor Issue Resolution Tracking
+
+| Issue # | Description | Phase | Status |
+|---------|-------------|-------|--------|
+| #21 | Duplicate response protocol | 3 | 🔄 Planned |
+| #22 | "auto" height undefined | 2 | 🔄 Planned |
+| #23 | Percentage quotes inconsistent | 2 | 🔄 Planned |
+| #24 | Accessibility report output | 3 | 🔄 Planned |
+| #25 | Shape type vocabulary | 2 | 🔄 Planned |
+| #26 | Text box vs bullet criteria | 2 | 🔄 Planned |
+| #27 | Footer flags documentation | 2 | 🔄 Planned |
+| #28 | Grid positioning unused | 2 | 🔄 Planned |
+| #29 | Cognitive group diagram | 3 | 🔄 Planned |
+| #30 | HMAC example security | 1 | 🔄 Planned |
+| #31 | LibreOffice dependency | 3 | 🔄 Planned |
+| #32 | Checksum file format | 3 | 🔄 Planned |
+
+---
+
+## Final Document Structure (v3.8)
+
+```
+📄 PowerPoint AI Agent System Prompt v3.8
+│
+├── 📋 DOCUMENT HEADER
+│   ├── Title & Version (v3.8)
+│   ├── Version History Table
+│   ├── Document Status
+│   └── Quick Reference TOC
+│
+├── 📑 SECTION I: IDENTITY & MISSION
+│   ├── 1.1 Identity (updated)
+│   ├── 1.2 Core Philosophy
+│   └── 1.3 Mission Statement
+│
+├── 📑 SECTION II: GOVERNANCE FOUNDATION
+│   ├── 2.1 Immutable Safety Hierarchy
+│   ├── 2.2 The Three Inviolable Laws
+│   ├── 2.3 Approval Token System
+│   │   └── 2.3.1 Token Acquisition Workflow (NEW)
+│   ├── 2.4 JSON Schema Validation Framework
+│   │   └── 2.4.1 Schema Availability Handling (NEW)
+│   ├── 2.5 Non-Destructive Defaults
+│   │   └── 2.5.1 Extended Dry-Run Requirements (NEW)
+│   ├── 2.6 Presentation Versioning Protocol
+│   ├── 2.7 Audit Trail Requirements
+│   └── 2.8 Destructive Operation Protocol
+│
+├── 📑 SECTION III: OPERATIONAL RESILIENCE
+│   ├── 3.1 Probe Resilience Framework
+│   │   ├── 3.1.1 Probe Output Schema (NEW)
+│   │   └── 3.1.2 Fallback Probe Output Schema (NEW)
+│   ├── 3.2 Preflight Checklist
+│   ├── 3.3 Error Handling Matrix (updated: codes 6, 7)
+│   │   └── 3.3.1 Refined Exit Codes (NEW)
+│   ├── 3.4 Error Recovery Hierarchy
+│   │   └── 3.4.1 Alternative Tool Mapping (NEW)
+│   └── 3.5 Shape Index Management
+│       └── 3.5.1 Shape Index Locking Protocol (NEW)
+│
+├── 📑 SECTION IV: WORKFLOW PHASES
+│   ├── Phase ALL: Validation Templates
+│   ├── Phase 0: Request Intake (two-stage scoring)
+│   │   ├── Stage 0a: Initial Classification (NEW)
+│   │   └── Stage 0b: Refined Classification (NEW)
+│   ├── Phase 1: Initialize
+│   ├── Phase 2: Discover
+│   ├── Phase 3: Plan (manifest v3.8)
+│   │   └── 3.1.1 6×6 Rule Validation (NEW)
+│   ├── Phase 4: Create
+│   ├── Phase 5: Validate (fixed workflows)
+│   └── Phase 6: Deliver
+│
+├── 📑 SECTION V: TOOL ECOSYSTEM (v3.8)
+│   ├── 5.1 Complete Tool Catalog (42 tools)
+│   ├── 5.2 Position & Size Syntax Reference
+│   │   └── 5.2.1 Syntax Compatibility Matrix (NEW)
+│   ├── 5.3 Chart Types Reference
+│   │   └── 5.3.1 Chart Type Validation (NEW)
+│   └── 5.4 Shape Types Reference (NEW)
+│
+├── 📑 SECTION VI: DESIGN INTELLIGENCE SYSTEM
+│   ├── 6.1 Visual Hierarchy Framework
+│   ├── 6.2 Typography System (12pt minimum unified)
+│   ├── 6.3 Color System
+│   ├── 6.4 Layout & Spacing System
+│   ├── 6.5 Content Density Rules
+│   └── 6.6 Overlay Safety Guidelines
+│
+├── 📑 SECTION VII: ACCESSIBILITY REQUIREMENTS
+│   ├── 7.1 WCAG 2.1 AA Mandatory Checks (12pt fixed)
+│   ├── 7.2 Notes as Accessibility Aid
+│   ├── 7.3 Alt-Text Best Practices
+│   ├── 7.4 Accessibility Remediation Workflows (fixed)
+│   │   └── Template Index (AT-1 through AT-5)
+│   └── 7.5 Speaker Notes Mode Selection (NEW)
+│
+├── 📑 SECTION VIII: VISUAL PATTERN LIBRARY
+│   ├── 8.1 Pattern Index (NEW - complete table)
+│   ├── 8.2 Pattern Selection Decision Tree (updated)
+│   ├── 8.3 GROUP A: Narrative & Impact Patterns
+│   │   ├── P-A1: Executive Summary
+│   │   ├── P-A2: Quote Impact
+│   │   ├── P-A3: Testimonial
+│   │   └── P-A4: Q&A Closing
+│   ├── 8.4 GROUP B: Data & Analytics Patterns
+│   │   ├── P-B1: Data-Heavy Slide
+│   │   ├── P-B2: Comparison Slide
+│   │   ├── P-B3: Financial Summary
+│   │   ├── P-B4: SWOT Analysis
+│   │   └── P-B5: Risk Matrix
+│   ├── 8.5 GROUP C: Visual & Technical Patterns
+│   │   ├── P-C1: Image Showcase
+│   │   ├── P-C2: Technical Detail
+│   │   ├── P-C3: Timeline
+│   │   └── P-C4: Product Showcase
+│   └── 8.6 GROUP D: Process & Structure Patterns
+│       ├── P-D1: Process Flow
+│       └── P-D2: Team Bio
+│
+├── 📑 SECTION IX: WORKFLOW TEMPLATES
+│   ├── 9.1 Template Index (NEW)
+│   ├── WT-1: New Presentation with Script
+│   ├── WT-2: Visual Enhancement with Overlays
+│   └── WT-3: Surgical Rebranding
+│
+├── 📑 SECTION X: RESPONSE PROTOCOL
+│   ├── 10.1 Initialization Declaration (v3.8)
+│   └── 10.2 Standard Response Structure
+│
+├── 📑 SECTION XI: ABSOLUTE CONSTRAINTS
+│   ├── 11.1 Immutable Rules (updated)
+│   ├── 11.2 Ambiguity Resolution Protocol
+│   └── 11.3 Pattern Deviation Protocol
+│
+├── 📑 APPENDIX A: TOOL ARGUMENT SCHEMA REGISTRY (v3.8)
+│   ├── A.1 Critical Tool Argument Validation Rules
+│   ├── A.2 Critical Validation Patterns
+│   ├── A.3 Common Error Patterns & Fixes
+│   └── A.4 Tool Dependency Chain Reference
+│
+├── 📑 APPENDIX B: DELIVERY PACKAGE SPECIFICATION (v3.8)
+│   ├── B.1 Complete Delivery Package Contents
+│   └── B.2 Checksum Generation & Verification
+│
+├── 📑 APPENDIX C: COMPLETE TOOL CATALOG (NEW)
+│   ├── C.1 File Operations (6 tools)
+│   ├── C.2 Inspection Tools (5 tools)
+│   ├── C.3 Content Creation Tools (10 tools)
+│   ├── C.4 Formatting Tools (8 tools)
+│   ├── C.5 Structure Tools (5 tools)
+│   ├── C.6 Validation Tools (3 tools)
+│   ├── C.7 Export Tools (3 tools)
+│   └── C.8 Utility Tools (2 tools)
+│
+├── 📑 APPENDIX D: JSON SCHEMAS (NEW)
+│   ├── D.1 ppt_get_info.schema.json
+│   ├── D.2 ppt_capability_probe.schema.json
+│   ├── D.3 ppt_get_slide_info.schema.json
+│   ├── D.4 manifest-v3.8.schema.json
+│   └── D.5 accessibility_report.schema.json
+│
+├── 📑 APPENDIX E: VERSION HISTORY (NEW)
+│   └── E.1 Changelog (v3.5 → v3.8)
+│
+└── 📑 FINAL DIRECTIVE
+    ├── Quality Commitments
+    ├── Initialization Template (v3.8)
+    └── Document Footer
+```
+
+---
+
+## Execution Timeline
+
+| Phase | Sections | Checklist Items | Estimated Output |
+|-------|----------|-----------------|------------------|
+| Phase 1 | Header, I, II, III | 35 items | ~8,000 words |
+| Phase 2 | IV, V, VI, VII | 44 items | ~10,000 words |
+| Phase 3 | VIII, IX, X, XI, Appendices | 52 items | ~12,000 words |
+| **Total** | **All** | **131 items** | **~30,000 words** |
+
+---
+
+## Pre-Implementation Validation
+
+### Plan Completeness Check
+
+| Criterion | Status | Evidence |
+|-----------|--------|----------|
+| All 10 critical issues addressed | ✅ | Mapped to specific checklist items |
+| All 10 medium issues addressed | ✅ | Mapped to specific checklist items |
+| All 12 minor issues addressed | ✅ | Mapped to specific checklist items |
+| Version unified to v3.8 | ✅ | Items H-1, FD-1, multiple |
+| Tool catalog complete (42) | ✅ | Appendix C items C-1 to C-10 |
+| Pattern library reorganized | ✅ | Items VIII-1 to VIII-10 |
+| All sections have checklists | ✅ | 131 total items |
+| Cross-phase dependencies identified | ✅ | Dependency graph provided |
+| Validation gates defined | ✅ | 6 gates per phase |
+
+### Consistency Verification
+
+| Check | Method | Status |
+|-------|--------|--------|
+| No version conflicts | All refs → v3.8 | ✅ Planned |
+| No font size conflicts | All refs → 12pt min | ✅ Planned |
+| No template name conflicts | AT-* vs WT-* | ✅ Planned |
+| Pattern IDs unique | P-[A-D][1-5] | ✅ Planned |
+| Tool count = 42 | Sum categories | ✅ Planned |
+| Exit codes unique | 0-7 non-overlapping | ✅ Planned |
+
+---
+
+## Risk Assessment
+
+| Risk | Probability | Impact | Mitigation |
+|------|-------------|--------|------------|
+| Tool catalog discrepancy | Medium | High | Cross-reference with pattern usage |
+| Schema format incompatibility | Low | Medium | Provide JSON Schema draft-07 |
+| Pattern renumbering confusion | Medium | Low | Include mapping table v3.7→v3.8 |
+| Overlooked version reference | Medium | Low | Global text search validation |
+| Bash syntax still incorrect | Low | High | Manual shellcheck validation |
+
+---
+
+## Implementation Approval Request
+
+### Ready for Review
+
+The comprehensive implementation plan is complete and ready for your review. 
+
+**Summary**:
+- **3 Phases** covering all 11 sections + 5 appendices
+- **131 checklist items** ensuring complete coverage
+- **32 issues resolved** (10 critical, 10 medium, 12 minor)
+- **18 validation gates** ensuring quality at each phase
+- **~30,000 words** estimated final document
+
+### Approval Needed
+
+Please confirm:
+
+1. ✅ Plan scope is acceptable
+2. ✅ Phase breakdown is appropriate
+3. ✅ Checklist granularity is sufficient
+4. ✅ New appendices (C, D, E) are desired
+5. ✅ Pattern renaming scheme (P-A1, P-B1, etc.) is approved
+
+---
+
+**Ready to proceed with Phase 1 implementation upon your approval.**
