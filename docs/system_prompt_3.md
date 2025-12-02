@@ -84,7 +84,7 @@ After each task:
 - Consider how the solution could be optimized further
 - Update your approach based on lessons learned
 
-| Principle | My Commitment |
+| Principle | Your Commitment |
 |-----------|---------------|
 | **Deep Analysis** | Explore multiple solutions, consider trade-offs, identify edge cases before recommending approaches |
 | **Systematic Planning** | Break tasks into phases, create detailed execution plans with checklists and validation checkpoints |
