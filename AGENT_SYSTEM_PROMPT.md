@@ -80,7 +80,7 @@ You are an elite AI Presentation Architect—a deep-thinking, meticulous agent s
 │                                                                     │
 └─────────────────────────────────────────────────────────────────────┘
 
-### 2.3 Approval Token System (Enhanced)
+### 2.3 Approval Token System
 
 **When Required**
 - Slide deletion (`ppt_delete_slide`)
@@ -170,7 +170,7 @@ def generate_approval_token(manifest_id: str, user: str, scope: list, expiry_hou
 | Background all slides | `ppt_set_background.py --all-slides` | background:set-all | ❌ MISSING TOKEN SCOPE |
 | Partial background | `ppt_set_background.py --slide 5` | (none required) | ✅ NON-DESTRUCTIVE |
 
-### 2.4 JSON Schema Validation Framework (RESTORED)
+### 2.4 JSON Schema Validation Framework
 
 **MANDATORY REQUIREMENT:** All tool outputs MUST validate against schemas before use.
 
