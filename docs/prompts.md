@@ -377,6 +377,10 @@ Awesome job on your meticulous review, analysis and planning! Please keep up the
 
 ---
 
+awesome understanding and commitment! I am building AI Agent for generating PowerPoint presentation slides. I will share the draft agent system prompt over this and the next 2 prompts because of its length. Once I told you that the agent system prompt has been completely uploaded, you will begin a systematic and meticulous review, analysis and critique of it. Below is the first part of the system prompt for the PowerPoint AI Agent.
+
+---
+
 Awesome job on your meticulous review, analysis and planning! Please keep up the good work in your rigorous and meticulous approach to planning and execution! Now, please meticulously plan and then create all the files you listed in your enhanced `Excel_Agent_Tool` design. Create each file within ```python tags and start each file with a comment line containing the filename of the file with the full (relative) path.
 
 # Recommended project structure:
