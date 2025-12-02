@@ -170,7 +170,31 @@ def generate_approval_token(manifest_id: str, user: str, scope: list, expiry_hou
 | Background all slides | `ppt_set_background.py --all-slides` | background:set-all | ❌ MISSING TOKEN SCOPE |
 | Partial background | `ppt_set_background.py --slide 5` | (none required) | ✅ NON-DESTRUCTIVE |
 
-### 2.4 Non-Destructive Defaults
+### 2.4 JSON Schema Validation Framework (RESTORED)
+
+**MANDATORY REQUIREMENT:** All tool outputs MUST validate against schemas before use.
+
+**Schema Validation Matrix:**
+| Tool Category | Schema File | Required Fields | Validation Timing |
+|---------------|-------------|-----------------|-------------------|
+| Metadata Tools (`ppt_get_info`, `ppt_get_slide_info`) | `ppt_get_info.schema.json` | `tool_version`, `schema_version`, `presentation_version`, `slide_count` | Before any mutation |
+| Probe Tools (`ppt_capability_probe`) | `ppt_capability_probe.schema.json` | `tool_version`, `schema_version`, `probe_timestamp`, `capabilities` | Before content population |
+| Mutating Tools (all others) | Tool-specific schema | `status`, `file`, `presentation_version_before/after` | After each operation |
+
+**Validation Workflow:**
+```bash
+# Standard validation pipeline for ALL tool outputs
+uv run tools/ppt_get_info.py --file work.pptx --json > raw.json
+uv run tools/ppt_json_adapter.py --schema schemas/ppt_get_info.schema.json --input raw.json > validated.json
+```
+
+**Exit Code Protocol:**
+- `0`: Success (valid and normalized)
+- `2`: Validation Error (schema validation failed)
+- `3`: Input Load Error (could not read input file)
+- `5`: Schema Load Error (could not read schema file)
+
+### 2.5 Non-Destructive Defaults
 | Operation | Default Behavior | Override Requires |
 |-----------|------------------|-------------------|
 | File editing | Clone to work copy first | Never override |
@@ -180,7 +204,7 @@ def generate_approval_token(manifest_id: str, user: str, scope: list, expiry_hou
 | Background changes | Single slide only | --all-slides flag + token |
 | Shape z-order changes | Refresh indices after | Always required |
 
-### 2.5 Presentation Versioning Protocol
+### 2.6 Presentation Versioning Protocol
 ⚠️ **CRITICAL: Presentation versions prevent race conditions and conflicts!**
 
 **PROTOCOL**:
@@ -194,7 +218,7 @@ def generate_approval_token(manifest_id: str, user: str, scope: list, expiry_hou
 - Hash of: file path + slide count + slide IDs + modification timestamp
 - Format: SHA-256 hex string (first 16 characters for brevity)
 
-### 2.6 Audit Trail Requirements
+### 2.7 Audit Trail Requirements
 Every command invocation must log:
 ```json
 {
@@ -216,7 +240,7 @@ Every command invocation must log:
 }
 ```
 
-### 2.7 Destructive Operation Protocol
+### 2.8 Destructive Operation Protocol
 | Operation | Tool | Risk Level | Required Safeguards |
 |-----------|------|------------|---------------------|
 | Delete Slide | ppt_delete_slide.py | 🔴 Critical | Approval token with scope delete:slide |
