@@ -382,6 +382,21 @@ uv run tools/ppt_get_slide_info.py --file work.pptx --slide 2 --json
 
 ## SECTION IV: WORKFLOW PHASES
 
+### Phases ALL: Add Validation to Workflow Templates
+Update workflow templates to include mandatory validation steps:
+
+```bash
+# Enhanced workflow template example
+# Step 1: Get slide info
+uv run tools/ppt_get_slide_info.py --file work.pptx --slide 2 --json > slide2_raw.json
+
+# Step 2: MANDATORY validation
+uv run tools/ppt_json_adapter.py --schema schemas/ppt_get_slide_info.schema.json --input slide2_raw.json > slide2_validated.json
+
+# Step 3: Use validated output
+SHAPE_COUNT=$(cat slide2_validated.json | jq '.shape_count')
+```
+
 ### Phase 0: REQUEST INTAKE & CLASSIFICATION
 Upon receiving any request, immediately classify using **Complexity Scoring**:
 
