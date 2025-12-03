@@ -1,4 +1,5 @@
-$ find core/*py tools/*py schemas/*json requirements.txt CLAUDE.md AGENT_SYSTEM_PROMPT.md -type f
+$ find requirements.txt core/*py tools/*py schemas/capability_probe.v3.1.0.schema.json schemas/ppt* schemas/change* -type f
+requirements.txt
 core/__init__.py
 core/powerpoint_agent_core.py
 core/strict_validator.py
@@ -24,15 +25,18 @@ tools/ppt_export_pdf.py
 tools/ppt_extract_notes.py
 tools/ppt_format_chart.py
 tools/ppt_format_shape.py
+tools/ppt_format_table.py
 tools/ppt_format_text.py
 tools/ppt_get_info.py
 tools/ppt_get_slide_info.py
 tools/ppt_insert_image.py
 tools/ppt_json_adapter.py
+tools/ppt_merge_presentations.py
 tools/ppt_remove_shape.py
 tools/ppt_reorder_slides.py
 tools/ppt_replace_image.py
 tools/ppt_replace_text.py
+tools/ppt_search_content.py
 tools/ppt_set_background.py
 tools/ppt_set_footer.py
 tools/ppt_set_image_properties.py
@@ -41,10 +45,7 @@ tools/ppt_set_title.py
 tools/ppt_set_z_order.py
 tools/ppt_update_chart_data.py
 tools/ppt_validate_presentation.py
-schemas/capability_probe.v1.1.1.schema.json
-schemas/change_manifest.schema.json
+schemas/capability_probe.v3.1.0.schema.json
 schemas/ppt_capability_probe.schema.json
 schemas/ppt_get_info.schema.json
-requirements.txt
-CLAUDE.md
-AGENT_SYSTEM_PROMPT.md
+schemas/change_manifest.schema.json
