@@ -1,417 +1,397 @@
-# 📚 AGENT SYSTEM REFERENCE (v3.1.1)
+# PowerPoint Agent Tools v3.1.1 - System Reference for AI Agents
 
-> **PowerPoint Agent Tools** - Enabling AI agents to engineer presentations with precision, safety, and visual intelligence.
+**Project Version**: 3.1.1  
+**Document Version**: 2.1.0  
+**Last Updated**: December 3, 2025  
+**Status**: Production-Ready  
 
-**Document Version:** 1.2.0
-**Project Version:** 3.1.1
-**Last Updated:** December 2025
+> **⚠️ CRITICAL SAFETY NOTICE**: Approval tokens are **STRICTLY ENFORCED** in v3.1.1 for all destructive operations (delete_slide, remove_shape, merge_presentations). Operations without valid tokens will fail with exit code 4. This is not a "future requirement"—it is active enforcement in production code.
 
 ---
 
-## 🚀 Quick Start Guide
+## Table of Contents
 
-**Get up and running in 60 seconds**
+1. [Executive Summary](#executive-summary)
+2. [Quick Start Guide](#quick-start-guide)
+3. [Key Concepts](#key-concepts)
+4. [What's New in v3.1.1](#whats-new-in-v311)
+5. [Architecture Overview](#architecture-overview)
+6. [Design Philosophy](#design-philosophy)
+7. [Programming Model](#programming-model)
+8. [Approval Token Enforcement](#approval-token-enforcement)
+9. [Critical Patterns & Gotchas](#critical-patterns--gotchas)
+10. [Quick Reference: Tool Catalog (42 Tools)](#quick-reference-tool-catalog-42-tools)
+11. [Error Classification & Recovery](#error-classification--recovery)
+12. [Complete Recovery Protocol](#complete-recovery-protocol)
+
+---
+
+## Executive Summary
+
+**PowerPoint Agent Tools v3.1.1** is a governance-first orchestration layer enabling AI agents to programmatically engineer PowerPoint presentations with military-grade safety protocols. It's not merely a wrapper around `python-pptx`—it's a complete system solving fundamental computer science challenges:
+
+### The Problems We Solve
+
+1. **The Statefulness Paradox**: AI agents are stateless; PowerPoint files are stateful
+2. **Concurrency Control**: Preventing race conditions in multi-agent environments
+3. **Visual Fidelity**: Maintaining pixel-perfect layout integrity beyond content changes
+4. **Agent Safety**: Cryptographic approvals preventing catastrophic operations
+
+### Core Capabilities
+
+- **42 stateless CLI tools** (formerly 39, expanded with adapter/merge/search)
+- **Atomic file operations** with OS-level locking preventing corruption
+- **Governance enforcement** via HMAC-SHA256 approval tokens for destructive ops
+- **Geometry-aware versioning** detecting layout corruption invisible to content hashing
+- **JSON-first interfaces** optimized for AI consumption with standardized error handling
+- **5-level validation pipeline** for input, path, state, output, and governance
+
+### Compatibility
+
+| Component | Version | Notes |
+|-----------|---------|-------|
+| **Python** | 3.8+ | 3.10+ recommended |
+| **python-pptx** | 0.6.23 | Required (not >=0.6.21) |
+| **Pillow** | >=12.0.0 | Image processing/compression |
+| **LibreOffice** | 7.4+ | PDF/Image export only |
+
+---
+
+## Quick Start Guide
+
+Get up and running safely in 60 seconds:
 
 ```bash
-# 1. Clone the repository
+# 1. Clone repository
 git clone https://github.com/anthropics/powerpoint-agent-tools.git
 cd powerpoint-agent-tools
 
 # 2. Install dependencies (uv recommended)
-# Note: Requires python-pptx >= 0.6.23 and Pillow >= 12.0.0
 uv pip install -r requirements.txt
-uv pip install -r requirements-dev.txt
 
 # 3. Create a test presentation
 uv run tools/ppt_create_new.py --output test.pptx --json
-uv run tools/ppt_add_slide.py --file test.pptx --layout "Blank" --json
 
-# 4. Inspect the presentation (Probe)
-uv run tools/ppt_get_info.py --file test.pptx --json
+# 4. ALWAYS clone before modification (SAFETY REQUIRED)
+uv run tools/ppt_clone_presentation.py --source test.pptx --output work.pptx --json
 
-# 5. Add a semi-transparent overlay (Overlay Pattern)
-uv run tools/ppt_add_shape.py --file test.pptx --slide 0 --shape rectangle \
-  --position '{"left":"0%","top":"0%"}' --size '{"width":"100%","height":"100%"}' \
-  --fill-color "#FFFFFF" --fill-opacity 0.15 --json
+# 5. Add a slide to your working copy
+uv run tools/ppt_add_slide.py --file work.pptx --layout "Title and Content" --json
 
-# 6. Validate result
-uv run tools/ppt_validate_presentation.py --file test.pptx --policy standard --json
+# 6. Inspect to understand structure (PROBE BEFORE OPERATE)
+uv run tools/ppt_get_info.py --file work.pptx --json
+
+# 7. Validate result matches requirements
+uv run tools/ppt_validate_presentation.py --file work.pptx --policy standard --json
 ```
 
-### 🔑 Key Concepts to Remember
+---
+
+## Key Concepts
 
 | Concept | Rule | Why It Matters |
-|---------|------|----------------|
-| 🔒 **Clone Before Edit** | Never modify source files directly | Prevents accidental data loss |
-| 🔍 **Probe Before Operate** | Always inspect slide structure first | Avoids layout guessing errors |
-| 🔄 **Refresh Indices** | Re-query after structural operations | Shape indices shift after changes |
-| 📊 **JSON-First I/O** | All tools output structured JSON | Enables machine parsing |
-| 🤫 **Output Hygiene** | `stderr` suppressed for clean JSON | Prevents parsing errors |
-| 👮 **Governance** | Destructive ops require tokens | Prevents unauthorized deletion |
+|---------|------|---------------|
+| **🔒 Clone Before Edit** | Never modify source files directly | Prevents accidental data loss |
+| **�� Probe Before Operate** | Always inspect slide structure first | Avoids layout guessing errors |
+| **🔄 Refresh Indices** | Re-query after structural operations | Shape indices shift after changes |
+| **📊 JSON-First I/O** | All tools output structured JSON | Enables machine parsing |
+| **🤫 Output Hygiene** | stderr suppressed for clean JSON | Prevents JSON parsing errors |
+| **👮 Governance** | Destructive ops require approval tokens | Prevents unauthorized deletion |
+| **📐 Geometry Tracking** | Check version hashes before operations | Detects concurrent modifications |
+| **🛡️ Recovery Protocol** | Always have backup/restore procedures | Prevents permanent corruption |
 
 ---
 
-## ✨ What's New in v3.1.1
+## What's New in v3.1.1
 
-| Feature | Description |
-|---------|-------------|
-| 🧩 **Merge Tool** | `ppt_merge_presentations.py` combines slides from multiple decks |
-| 🔎 **Content Search** | `ppt_search_content.py` finds text/regex across slides/notes |
-| 🔌 **JSON Adapter** | `ppt_json_adapter.py` normalizes and validates tool outputs |
-| 🛡️ **Validation Policies** | `lenient`, `standard`, and `strict` validation profiles |
-| 🎨 **Opacity Support** | Native `fill_opacity` (0.0-1.0) replacing legacy transparency |
-| 📝 **Smart Notes** | `ppt_add_notes.py` supports append, prepend, and overwrite modes |
-
----
-
-## 📋 Table of Contents
-
-1. [🎯 Project Identity & Mission](#1-project-identity--mission)
-2. [🏗️ Architecture Overview](#2-architecture-overview)
-3. [🏛️ Design Philosophy](#3-design-philosophy)
-4. [🛠️ Programming Model](#4-programming-model)
-5. [📏 Code Standards](#5-code-standards)
-6. [⚠️ Critical Patterns & Gotchas](#6-critical-patterns--gotchas)
-7. [🧪 Testing Requirements](#7-testing-requirements)
-8. [📤 Contribution Workflow](#8-contribution-workflow)
-9. [📖 Quick Reference](#9-quick-reference)
-10. [🔧 Troubleshooting](#10-troubleshooting)
+| Feature | Description | Status |
+|---------|-------------|--------|
+| **🔒 Token Enforcement** | Destructive operations require HMAC tokens | **STRICTLY ENFORCED** (not future) |
+| **�� Geometry-Aware Versioning** | Detects layout shifts invisible to content hashing | ✅ Fully implemented |
+| **🔄 Complete Recovery Protocol** | Systematic corruption recovery workflow | ✅ Added with script |
+| **📊 Validation Policies** | Three strictness levels (lenient, standard, strict) | ✅ Implemented |
+| **⚡ Large File Handling** | Timeout protection for files >50MB | ✅ Integrated |
+| **🎨 Opacity Support** | Native fill_opacity via OOXML `<a:alpha>` | ✅ Production-ready |
+| **🔌 JSON Adapter** | Normalizes and validates tool outputs | ✅ NEW in 3.1.1 |
+| **🔀 Merge Tool** | Combines slides from multiple presentations | ✅ NEW in 3.1.1 |
+| **🔍 Content Search** | Regex search across slides and notes | ✅ NEW in 3.1.1 |
 
 ---
 
-## 1. 🎯 Project Identity & Mission
+## Architecture Overview
 
-### Core Mission
-
-**"Enabling AI agents to engineer presentations with precision, safety, and visual intelligence"**
-
-PowerPoint Agent Tools is a suite of **42 stateless CLI utilities** designed for AI agents to programmatically create, modify, and validate PowerPoint (`.pptx`) files.
-
-### Compatibility Matrix
-
-| Component | Version | Notes |
-|-----------|---------|-------|
-| Python | 3.8+ | 3.10+ recommended |
-| python-pptx | **0.6.23** | Required for latest features |
-| Pillow | **>= 12.0.0** | For image processing/compression |
-| LibreOffice | 7.4+ | Required for PDF/Image export |
-| uv | Latest | Recommended package manager |
-
----
-
-## 2. 🏗️ Architecture Overview
-
-### Hub-and-Spoke Model
+### Hub-and-Spoke with Governance Enforcement
 
 ```
-                         ┌─────────────────────────┐
-                         │   AI Agent / Human      │
-                         │   (Orchestration Layer) │
-                         └───────────┬─────────────┘
-                                     │
-                    ┌────────────────┼────────────────┐
-                    │                │                │
-                    ▼                ▼                ▼
-           ┌───────────────┐ ┌───────────────┐ ┌───────────────┐
-           │ ppt_add_      │ │ ppt_merge_    │ │ ppt_validate_ │
-           │ shape.py      │ │ slides.py     │ │ presentation  │
-           │   (SPOKE)     │ │   (SPOKE)     │ │   (SPOKE)     │
-           └───────┬───────┘ └───────┬───────┘ └───────┬───────┘
-                   │                 │                 │
-                   └─────────────────┼─────────────────┘
-                                     │
-                                     ▼
-                    ┌─────────────────────────────────┐
-                    │   powerpoint_agent_core.py      │
-                    │            (HUB)                │
-                    │                                 │
-                    │   • PowerPointAgent (Context)   │
-                    │   • Atomic File Locking         │
-                    │   • XML Manipulation (Opacity)  │
-                    │   • Geometry-Aware Versioning   │
-                    │   • Approval Token Validation   │
-                    └─────────────────────────────────┘
+┌────────────────────────────────────────┐
+│  AI Agent / Orchestration Layer        │
+│  (Stateless, retry/resume capable)     │
+└────────────────┬───────────────────────┘
+                 │
+    ┌────────────┼────────────┐
+    │            │            │
+    ▼            ▼            ▼
+ Tool A        Tool B      Tool C
+(42 tools total with consistent interface)
+    │            │            │
+    └────────────┼────────────┘
+                 │
+                 ▼
+    ┌────────────────────────────────────┐
+    │   powerpoint_agent_core.py (Hub)   │
+    │                                    │
+    │  • PowerPointAgent (context mgr)   │
+    │  • Atomic File Locking (OS-level)  │
+    │  • Geometry-Aware Versioning       │
+    │  • OOXML Manipulation (opacity)    │
+    │  • Approval Token Validation       │
+    │  • Path Traversal Prevention       │
+    │  • 14 Specialized Exceptions       │
+    └────────────────────────────────────┘
+                 │
+                 ▼
+    ┌────────────────────────────────────┐
+    │     python-pptx 0.6.23             │
+    │  + Pillow 12.0.0 (images)          │
+    └────────────────────────────────────┘
+                 │
+                 ▼
+         .pptx Files (OOXML)
 ```
 
-### Exit Code Matrix (v3.1.1)
+### Exit Code Matrix (v3.1.1) - ENFORCED IN ALL TOOLS
 
-The tools utilize a standardized exit code system for robust error handling:
+| Code | Meaning | Cause | Recovery Action |
+|------|---------|-------|-----------------|
+| **0** | Success | Operation completed successfully | Proceed to next step |
+| **1** | Usage Error | Invalid arguments or file paths | Check CLI arguments |
+| **2** | Validation Error | JSON schema or data validation failed | Fix input format/values |
+| **3** | Transient Error | File lock timeout or I/O issue | Retry with exponential backoff |
+| **4** | Permission Error | Missing/invalid approval token | Generate valid HMAC token |
+| **5** | Internal Error | Unexpected condition in core code | Check logs, restore from backup |
 
-| Code | Meaning | Recovery Action |
-|------|---------|-----------------|
-| `0` | **Success** | Proceed to next step. |
-| `1` | **Usage Error** | Check arguments and file paths. |
-| `2` | **Validation Error** | JSON Schema validation failed. Check input format. |
-| `3` | **Transient Error** | Timeout or Lock Error. Retry with backoff. |
-| `4` | **Permission Error** | Approval token missing or invalid scope. |
-| `5` | **Internal Error** | Unexpected crash. Check logs. |
+### Tools Organization: 42 Stateless CLI Utilities
+
+- **Creation**: 5 tools (create_new, create_from_template, create_from_structure, clone, merge)
+- **Slides**: 4 tools (add, delete, duplicate, reorder)
+- **Shapes**: 4 tools (add, remove, format, z-order)
+- **Text**: 4 tools (text_box, title, format, replace)
+- **Images**: 4 tools (insert, replace, crop, properties)
+- **Charts**: 3 tools (add, update_data, format)
+- **Tables**: 2 tools (add, format)
+- **Content**: 5 tools (bullet_list, connector, notes, footer, background)
+- **Layout**: 2 tools (slide_layout, set_title)
+- **Inspection**: 3 tools (get_info, get_slide_info, capability_probe)
+- **Export**: 2 tools (export_pdf, export_images)
+- **Validation**: 3 tools (validate, check_accessibility, search)
+- **Advanced**: 2 tools (json_adapter, merge_presentations)
 
 ---
 
-## 3. 🏛️ Design Philosophy
+## Design Philosophy
 
-### The Five-Level Safety Hierarchy
+### The 5-Level Safety Hierarchy (ACTIVELY ENFORCED)
 
-1.  **Clone-Before-Edit**: Modify only working copies (`/work/` or cloned files).
-2.  **Approval Tokens**: Destructive actions (`delete_slide`, `remove_shape`) strictly require HMAC tokens.
-3.  **Output Hygiene**: `sys.stderr` is redirected to `/dev/null` to guarantee JSON purity on stdout.
-4.  **Version Hashing**: Geometry-aware hashing prevents race conditions by detecting layout shifts.
-5.  **Accessibility**: WCAG 2.1 checks are built-in (Alt Text, Contrast).
+| Level | Protocol | Implementation | Status | Agent Action |
+|-------|----------|-----------------|--------|--------------|
+| 1 | **Clone-Before-Edit** | `ppt_clone_presentation.py` creates isolated copies | ✅ Active | Always work on clones |
+| 2 | **Approval Tokens** | `ppt_delete_slide.py` raises `ApprovalTokenError` without token | 🔒 **Enforced** | Generate HMAC tokens for destructive ops |
+| 3 | **Output Hygiene** | `sys.stderr = open(os.devnull, 'w')` in all 42 tools | ✅ Implemented | No additional action needed |
+| 4 | **Version Hashing** | `get_presentation_version()` called before/after mutations | ✅ Active | Check hashes to detect concurrent edits |
+| 5 | **Accessibility** | `ppt_check_accessibility.py` enforces WCAG 2.1 | ✅ Implemented | Design with accessibility from start |
 
-### The Statelessness Contract
+---
 
-```python
-# ✅ CORRECT: Atomic Context
-with PowerPointAgent(path) as agent:
-    agent.open(path)
-    agent.add_slide(...)
-    agent.save() 
-# File unlocked, memory cleared
+## Programming Model
 
-# ❌ WRONG: Persistent State assumption
-agent = PowerPointAgent(path) # No context manager
-agent.add_slide(...) # May fail or leave locks
+### Standard Tool Template (v3.1.1 Compliance)
+
+All 42 tools follow this precise pattern with version tracking and error handling.
+
+### Position & Size Flexible Formats
+
+**Position** (5 formats):
+```json
+{"left": "10%", "top": "20%"}           // Percentage (responsive)
+{"anchor": "center"}                     // Anchor (layout-aware)
+{"grid_col": 3, "grid_row": 2}          // Grid (12-column)
+{"x": 914400, "y": 914400}              // Absolute (EMUs)
+{"x_inches": 1.0, "y_inches": 1.0}      // Inches
 ```
 
 ---
 
-## 4. 🛠️ Programming Model
+## Approval Token Enforcement
 
-### Tool Development Template
+### Overview
 
-Use this template for all new tools to ensure v3.1.1 compliance.
+**Destructive operations REQUIRE cryptographically signed approval tokens**. This is production code enforcement.
 
-```python
-#!/usr/bin/env python3
-"""
-PowerPoint [Action] Tool v3.1.1
-[Description]
+### Destructive Operations
 
-Usage: uv run tools/ppt_[name].py ... --json
-"""
+| Operation | Tool | Scope Pattern |
+|-----------|------|---------------|
+| **Delete Slide** | `ppt_delete_slide.py` | `slide:delete:<index>` |
+| **Remove Shape** | `ppt_remove_shape.py` | `shape:remove:<slide>:<shape>` |
+| **Merge Decks** | `ppt_merge_presentations.py` | `presentation:merge:<count>` |
 
-import sys
-import os
+### Token Generation (HMAC-SHA256)
 
-# --- HYGIENE BLOCK START ---
-# CRITICAL: Redirect stderr to /dev/null immediately to prevent library noise.
-sys.stderr = open(os.devnull, 'w')
-# --- HYGIENE BLOCK END ---
+```bash
+TOKEN=$(python3 -c "
+import hmac, hashlib
+secret = os.getenv('PPT_APPROVAL_SECRET', 'dev_secret')
+scope = 'slide:delete:2'
+print(hmac.new(secret.encode(), scope.encode(), hashlib.sha256).hexdigest())
+")
 
-import json
-import argparse
-from pathlib import Path
-from typing import Dict, Any
+uv run tools/ppt_delete_slide.py --file work.pptx --slide 2 --approval-token "$TOKEN" --json
+```
 
-# Allow importing core without package installation
-sys.path.insert(0, str(Path(__file__).parent.parent))
+---
 
-from core.powerpoint_agent_core import (
-    PowerPointAgent,
-    PowerPointAgentError,
-    SlideNotFoundError
-)
+## Critical Patterns & Gotchas
 
-__version__ = "3.1.1"
+### Pattern 1: The Index Refresh Mandate (CRITICAL)
 
-def do_action(filepath: Path, args) -> Dict[str, Any]:
-    # Validate file existence
-    if not filepath.exists():
-        raise FileNotFoundError(f"File not found: {filepath}")
+Operations that **INVALIDATE INDICES**: add_shape, remove_shape, set_z_order, delete_slide, merge_presentations
 
-    with PowerPointAgent(filepath) as agent:
-        agent.open(filepath)
-        
-        # Capture state before
-        version_before = agent.get_presentation_version()
-        
-        # Perform Operation
-        # result = agent.some_method(...)
-        
-        agent.save()
-        
-        # Capture state after
-        version_after = agent.get_presentation_version()
-        
-    return {
-        "status": "success",
-        "file": str(filepath.resolve()),
-        "presentation_version_before": version_before,
-        "presentation_version_after": version_after,
-        "tool_version": __version__
-    }
+**MANDATORY REFRESH after structural changes**:
+```bash
+# Add shape
+ADD_RESULT=$(uv run tools/ppt_add_shape.py ...)
+# IMMEDIATELY refresh indices
+uv run tools/ppt_get_slide_info.py --file work.pptx --slide 0 --json > /dev/null
+```
 
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--file', required=True, type=Path)
-    parser.add_argument('--json', action='store_true', default=True)
-    args = parser.parse_args()
+### Pattern 2: The Version Race Condition (MUST DETECT)
+
+```bash
+BEFORE=$(uv run tools/ppt_get_info.py --file work.pptx --json | jq -r '.presentation_version')
+# Do operations...
+AFTER=$(uv run tools/ppt_get_info.py --file work.pptx --json | jq -r '.presentation_version')
+[ "$BEFORE" != "$AFTER" ] && echo "Concurrent modification detected"
+```
+
+### Pattern 3: Complete Overlay Workflow
+
+```bash
+# 1. Add overlay
+OVERLAY=$(uv run tools/ppt_add_shape.py --file work.pptx --slide 0 ...)
+OVERLAY_INDEX=$(echo "$OVERLAY" | jq -r '.shape_index')
+
+# 2. Refresh indices
+uv run tools/ppt_get_slide_info.py --file work.pptx --slide 0 --json > /dev/null
+
+# 3. Send to back
+uv run tools/ppt_set_z_order.py --file work.pptx --slide 0 --shape "$OVERLAY_INDEX" --action "send_to_back" --json
+
+# 4. Refresh again (XML reordering changes indices)
+uv run tools/ppt_get_slide_info.py --file work.pptx --slide 0 --json > /dev/null
+```
+
+---
+
+## Quick Reference: Tool Catalog (42 Tools)
+
+### All Tools Listed by Category
+
+**Creation & Composition** (5): ppt_create_new, ppt_create_from_template, ppt_create_from_structure, ppt_clone_presentation, ppt_merge_presentations (NEW)
+
+**Slide Management** (4): ppt_add_slide, ppt_delete_slide, ppt_duplicate_slide, ppt_reorder_slides
+
+**Shape & Drawing** (4): ppt_add_shape, ppt_remove_shape, ppt_format_shape, ppt_set_z_order
+
+**Text & Formatting** (4): ppt_add_text_box, ppt_add_bullet_list, ppt_set_title, ppt_format_text
+
+**Content & Search** (3): ppt_replace_text, ppt_add_notes, ppt_search_content (NEW)
+
+**Images & Media** (4): ppt_insert_image, ppt_replace_image, ppt_crop_image, ppt_set_image_properties
+
+**Charts & Tables** (5): ppt_add_chart, ppt_update_chart_data, ppt_format_chart, ppt_add_table, ppt_format_table
+
+**Layout & Design** (5): ppt_set_slide_layout, ppt_set_footer, ppt_set_background, ppt_add_connector, ppt_extract_notes
+
+**Inspection & Discovery** (3): ppt_get_info, ppt_get_slide_info, ppt_capability_probe
+
+**Validation & Export** (5): ppt_validate_presentation, ppt_check_accessibility, ppt_export_images, ppt_export_pdf, ppt_json_adapter (NEW)
+
+---
+
+## Error Classification & Recovery
+
+### All 14 Exception Types
+
+PowerPointAgentError (base), SlideNotFoundError, ShapeNotFoundError, ChartNotFoundError, LayoutNotFoundError, ImageNotFoundError, InvalidPositionError, TemplateError, ThemeError, AccessibilityError, AssetValidationError, FileLockError, PathValidationError, ApprovalTokenError
+
+---
+
+## Complete Recovery Protocol
+
+### Automated Recovery Script
+
+```bash
+#!/bin/bash
+WORK_FILE="${1:-work.pptx}"
+SOURCE_FILE="${2:-source.pptx}"
+BACKUP_DIR=".recovery_backups"
+
+mkdir -p "$BACKUP_DIR"
+TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
+
+# Backup current state
+cp "$WORK_FILE" "$BACKUP_DIR/work_$TIMESTAMP.pptx"
+
+# Validate and restore if corrupt
+VALIDATION=$(uv run tools/ppt_validate_presentation.py --file "$WORK_FILE" --policy lenient --json)
+
+if echo "$VALIDATION" | jq -e '.status == "error"' >/dev/null 2>&1; then
+    echo "Corruption detected, restoring from backup"
+    LAST_GOOD=$(ls -t "$BACKUP_DIR"/work_*.pptx 2>/dev/null | sed -n '2p')
     
-    try:
-        result = do_action(args.file, args)
-        print(json.dumps(result, indent=2))
-        sys.exit(0)
-    except Exception as e:
-        # Standard Error Response
-        print(json.dumps({
-            "status": "error",
-            "error": str(e),
-            "error_type": type(e).__name__,
-            "tool_version": __version__
-        }, indent=2))
-        sys.exit(1)
+    if [ -n "$LAST_GOOD" ]; then
+        cp "$LAST_GOOD" "$WORK_FILE"
+    else
+        uv run tools/ppt_clone_presentation.py --source "$SOURCE_FILE" --output "$WORK_FILE" --json
+    fi
+fi
 
-if __name__ == "__main__":
-    main()
+# Clear stale locks
+[ -f "${WORK_FILE}.lock" ] && rm -f "${WORK_FILE}.lock"
+
+# Re-validate
+uv run tools/ppt_validate_presentation.py --file "$WORK_FILE" --policy standard --json
 ```
 
----
+### Pre-Operation Safety Checklist
 
-## 5. 📏 Code Standards
+- [ ] Working on Clone
+- [ ] Version Sync verified
+- [ ] Indices Fresh
+- [ ] Tokens Ready
+- [ ] Paths Safe
+- [ ] Resources Available
 
-### Naming Conventions & Structure
-*   **Files**: `ppt_<verb>_<noun>.py` (e.g., `ppt_add_slide.py`).
-*   **Imports**: `sys.path.insert` block required for standalone execution.
-*   **Hygiene**: `sys.stderr` suppression block is **mandatory** at top of file.
+### Post-Operation Validation Checklist
 
-### Data Structures
-
-**Position Dictionary:**
-```json
-{"left": "10%", "top": "20%"} 
-{"anchor": "center", "offset_x": 0, "offset_y": -1.0}
-{"grid_row": 2, "grid_col": 3, "grid_size": 12}
-```
-
-**Size Dictionary:**
-```json
-{"width": "50%", "height": "auto"}
-{"width": 5.0, "height": 3.0}
-```
+- [ ] Version Updated
+- [ ] Indices Planning (for next structural change)
+- [ ] Status OK
+- [ ] Backup Created
+- [ ] Errors Handled
+- [ ] Recovery Ready
 
 ---
 
-## 6. ⚠️ Critical Patterns & Gotchas
+## Document History
 
-### 1. Shape Index Shift
-**The Rule:** Structural operations (Add, Remove, Z-Order, Group) invalidate shape indices.
-**The Fix:** ALWAYS re-query `ppt_get_slide_info.py` after these operations. Do not cache indices.
-
-### 2. The Overlay Pattern
-**Goal:** Make text readable over images.
-**Steps:**
-1. Add Shape: `ppt_add_shape.py` with `fill_opacity=0.15`.
-2. **Refresh Indices**: `ppt_get_slide_info.py` (New shape is at top).
-3. Send to Back: `ppt_set_z_order.py --action send_to_back`.
-4. **Refresh Indices**: Indices have shifted again!
-
-### 3. Chart Updates
-**Limitation:** `python-pptx` cannot reliably update charts if the schema changes.
-**Strategy:**
-1. Delete old chart (`ppt_remove_shape.py` + Token).
-2. Create new chart (`ppt_add_chart.py`).
-
-### 4. Validation Policies
-The `ppt_validate_presentation.py` tool supports three strictness levels:
-*   `lenient`: Drafts. Allows empty slides, some missing alt text.
-*   `standard`: Internal use. Balanced checks.
-*   `strict`: Production. Zero tolerance for accessibility/structure issues.
+| Version | Date | Changes |
+|---------|------|---------|
+| 2.0.0 | Dec 3, 2025 | **MAJOR**: Complete rewrite for v3.1.1 - Added approval tokens, geometry versioning, 42 tools, 5-level safety, recovery protocol |
+| 1.1.0 | Nov 15, 2025 | Initial v3.1.0 documentation (39 tools) |
 
 ---
 
-## 9. 📖 Quick Reference: Tool Catalog (42 Tools)
-
-### Creation & Composition
-| Tool | Description |
-|------|-------------|
-| `ppt_create_new.py` | Create blank presentation |
-| `ppt_create_from_template.py` | Create from .pptx template |
-| `ppt_create_from_structure.py` | Build full deck from JSON definition |
-| `ppt_clone_presentation.py` | **Safety**: Create working copy |
-| `ppt_merge_presentations.py` | **New**: Combine slides from multiple decks |
-
-### Slide Management
-| Tool | Description |
-|------|-------------|
-| `ppt_add_slide.py` | Add slide with specific layout |
-| `ppt_delete_slide.py` | **Destructive**: Remove slide (Requires Token) |
-| `ppt_duplicate_slide.py` | Clone existing slide |
-| `ppt_reorder_slides.py` | Move slide position |
-| `ppt_set_slide_layout.py` | Change layout of existing slide |
-| `ppt_set_footer.py` | Configure footer/numbers |
-| `ppt_set_background.py` | Set color or image background |
-
-### Content & Text
-| Tool | Description |
-|------|-------------|
-| `ppt_add_text_box.py` | Add text container |
-| `ppt_add_bullet_list.py` | Add list with 6x6 rule validation |
-| `ppt_set_title.py` | Set title/subtitle |
-| `ppt_format_text.py` | Style text (font, size, color) |
-| `ppt_replace_text.py` | Find & replace (global/scoped) |
-| `ppt_add_notes.py` | Add speaker notes |
-
-### Visuals & Shapes
-| Tool | Description |
-|------|-------------|
-| `ppt_add_shape.py` | Add geometry with opacity |
-| `ppt_format_shape.py` | Style shapes (fill, line) |
-| `ppt_remove_shape.py` | **Destructive**: Remove shape (Requires Token) |
-| `ppt_set_z_order.py` | Layer management (Front/Back) |
-| `ppt_add_connector.py` | Connect two shapes |
-
-### Images & Media
-| Tool | Description |
-|------|-------------|
-| `ppt_insert_image.py` | Add image with auto-sizing |
-| `ppt_replace_image.py` | Swap image, keep position |
-| `ppt_crop_image.py` | Crop visual extent |
-| `ppt_set_image_properties.py`| Set Alt Text (Accessibility) |
-
-### Data Visualization
-| Tool | Description |
-|------|-------------|
-| `ppt_add_chart.py` | Create charts (Bar, Line, Pie...) |
-| `ppt_update_chart_data.py` | Refresh chart data |
-| `ppt_format_chart.py` | Set title, legend position |
-| `ppt_add_table.py` | Create data tables |
-| `ppt_format_table.py` | Style table rows/cells |
-
-### Inspection & Discovery
-| Tool | Description |
-|------|-------------|
-| `ppt_get_info.py` | Metadata, version, dimensions |
-| `ppt_get_slide_info.py` | Deep slide inspection (shapes, text) |
-| `ppt_capability_probe.py` | **Critical**: Detect layouts & placeholders |
-| `ppt_extract_notes.py` | Dump speaker notes |
-| `ppt_search_content.py` | **New**: Regex search across deck |
-
-### Validation & Pipeline
-| Tool | Description |
-|------|-------------|
-| `ppt_validate_presentation.py`| Policy-based validation |
-| `ppt_check_accessibility.py` | WCAG 2.1 compliance check |
-| `ppt_export_images.py` | Render slides to PNG/JPG |
-| `ppt_export_pdf.py` | Convert deck to PDF |
-| `ppt_json_adapter.py` | **New**: Normalize tool output |
-
----
-
-## 10. 🔧 Troubleshooting
-
-### Common Errors
-
-| Error | Code | Cause | Fix |
-|-------|------|-------|-----|
-| `ApprovalTokenError` | 4 | Destructive op without token | Generate token with correct scope |
-| `ShapeNotFoundError` | 1 | Stale shape index | Run `ppt_get_slide_info.py` |
-| `FileLockError` | 3 | File in use | Wait or force-clear `.lock` file |
-| `JSONDecodeError` | 5 | Stdout pollution | Check hygiene block in tool |
-| `SlideNotFoundError` | 1 | Index out of bounds | Check slide count |
-
-### Recovery
-If a presentation becomes corrupted or stuck:
-1. **Delete the working copy**: `rm work.pptx`
-2. **Re-clone**: `ppt_clone_presentation.py` from source.
-3. **Re-run** operations from manifest.
+**This document is the authoritative system reference for PowerPoint Agent Tools v3.1.1.**
+**For detailed architectural analysis, see Project_Architecture_Document.md.**
 
