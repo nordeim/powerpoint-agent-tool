@@ -389,6 +389,23 @@ Awesome understanding! Now, please meticulously review and analyze the attached 
 
 ---
 
+Awesome job on your meticulous review, analysis and planning! Please keep up the good work in your rigorous and meticulous approach to planning and execution! Now, please meticulously review and analyze the actual project codebase files inside the bundle file, `codebase_files_set.md` attached. Then regenerate a complete updated version of your complete assessment analysis report of the project together with a re-assessment of the misalignment of the project documents shared earlier.
+
+---
+
+Awesome job on your meticulous review, analysis and planning! Please keep up the good work in your rigorous and meticulous approach to planning and execution! Now, please think deeper and think harder to deeply and thoroughly explore systematically and meticulously how best to update the `CLAUDE.md` file shared earlier, to align closely with the latest codebase. First, review and validate the proposed updates (enhancements) against the original file again to ensure no regression after updating, then meticulously create an comprehensive implementation plan to create a complete working replacement file for `CLAUDE.md`, include in your plan a checklist for each section that needs updating. Review and validate your implementation plan before proceeding meticulously to execute it. Remember to review and validate the newly generated replacement file to ensure that it is correct and accurate and that it does not contain any placeholder comment. 
+
+- Think deeply and thoroughly about how to re-imagine the update
+- Ensure compatibility and alignment with the actual project codebase
+- Review and validate proposed changes against original version to prevent regression
+- Create a comprehensive implementation plan with checklists
+- Review and validate the plan before executing
+- Execute meticulously to create complete working replacement file in markdown format
+- Review and validate the newly generated file to ensure correctness
+- No placeholder comments - complete implementations
+
+---
+
 Awesome job on your meticulous review, analysis and planning! Please keep up the good work in your rigorous and meticulous approach to planning and execution! Now, please meticulously plan and then create all the files you listed in your enhanced `Excel_Agent_Tool` design. Create each file within ```python tags and start each file with a comment line containing the filename of the file with the full (relative) path.
 
 # Recommended project structure:
