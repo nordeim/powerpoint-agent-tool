@@ -26,11 +26,12 @@ All tools must strictly adhere to these 4 principles to ensure compatibility wit
 # ✅ CORRECT: Clone first, then operate
 from core.powerpoint_agent_core import PowerPointAgent
 
-with PowerPointAgent() as agent:
-    agent.clone_presentation(
-        source=Path("/source/template.pptx"),
-        output=Path("/work/modified.pptx")
-    )
+# Open the source presentation, then clone it
+with PowerPointAgent(Path("/source/template.pptx")) as agent:
+    agent.open(Path("/source/template.pptx"))
+    new_agent = agent.clone_presentation(Path("/work/modified.pptx"))
+    new_agent.save()
+    new_agent.close()
     
 # Now operate on the work copy
 with PowerPointAgent(Path("/work/modified.pptx")) as agent:
@@ -73,8 +74,8 @@ with PowerPointAgent(filepath) as agent:
 
 ### 2.3 Approval Token System
 **CRITICAL OPERATIONS REQUIRE APPROVAL**. The following operations require approval tokens (mandated by System Prompt v3.0 for all new destructive tools):
-- `ppt_delete_slide.py` (Future requirement)
-- `ppt_remove_shape.py` (Future requirement)
+- `ppt_delete_slide.py` 🔒 **Actively enforced (exit code 4)**
+- `ppt_remove_shape.py` 🔒 **Actively enforced (exit code 4)**
 - Mass text replacements without dry-run
 - Background replacements on all slides
 - Any operation marked `critical: true` in manifest
@@ -192,9 +193,9 @@ from core.powerpoint_agent_core import (
     SlideNotFoundError,
     ShapeNotFoundError,
     LayoutNotFoundError,
-    ValidationError
+    ApprovalTokenError
 )
-from core.strict_validator import validate_against_schema
+from core.strict_validator import validate_against_schema, ValidationError
 
 def logic_function(filepath: Path, param: str) -> Dict[str, Any]:
     """
@@ -415,10 +416,10 @@ You do not need to check `powerpoint_agent_core.py`. Use this reference for avai
 ### **Slide Manipulation**
 | Method | Args | Returns |
 | :--- | :--- | :--- |
-| `add_slide()` | `layout_name: str, index: int=None` | `int` (new index) |
-| `delete_slide()` | `index: int` | `None` ⚠️ **Requires approval token** |
-| `duplicate_slide()` | `index: int` | `int` (new index) |
-| `reorder_slides()` | `from_index: int, to_index: int` | `None` |
+| `add_slide()` | `layout_name: str, index: int=None` | `Dict[str, Any]` (slide_index, layout_name, total_slides, presentation_version_before/after) |
+| `delete_slide()` | `index: int, approval_token: str=None` | `Dict[str, Any]` (deleted_index, previous_count, new_count, presentation_version_before/after) ⚠️ **Requires approval token** |
+| `duplicate_slide()` | `index: int` | `Dict[str, Any]` (new_slide_index, total_slides, presentation_version_before/after) |
+| `reorder_slides()` | `from_index: int, to_index: int` | `Dict[str, Any]` (from_index, to_index, total_slides, presentation_version_before/after) |
 | `set_slide_layout()` | `slide_index: int, layout_name: str` | `None` |
 
 ### **Content Creation**
@@ -601,7 +602,7 @@ The resilience pattern has 3 mandatory layers:
 ```python
 import time
 
-def detect_layouts(prs, timeout_seconds=15):
+def detect_layouts(prs, timeout_seconds=30):
     """Detect layouts with timeout protection."""
     start_time = time.perf_counter()
     results = []
@@ -663,7 +664,7 @@ for layout in prs.slide_layouts:
 
 **Layer 3: Partial Results + Warnings (Graceful Degradation)**
 ```python
-def probe_presentation(filepath: Path, timeout_seconds: int = 15):
+def probe_presentation(filepath: Path, timeout_seconds: int = 30):
     """Probe with graceful degradation."""
     warnings = []
     info = []
@@ -701,7 +702,7 @@ def probe_presentation(filepath: Path, timeout_seconds: int = 15):
 
 **Complete Example: Safe Discovery Tool Template**
 ```python
-def probe_with_resilience(filepath: Path, deep: bool = False, timeout_seconds: int = 15):
+def probe_with_resilience(filepath: Path, deep: bool = False, timeout_seconds: int = 30):
     """
     Complete resilience pattern for discovery tools.
     
@@ -790,7 +791,7 @@ TOOL_METADATA = {
 ### Phase-Specific Requirements
 
 **DISCOVER Phase Tools:**
-- Must implement timeout handling (15 seconds default)
+- Must implement timeout handling (30 seconds default)
 - Must have fallback probes (3 retries with exponential backoff)
 - Must return comprehensive metadata including probe type
 - Must handle probe failures gracefully

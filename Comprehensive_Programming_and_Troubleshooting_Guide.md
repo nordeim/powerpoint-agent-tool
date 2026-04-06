@@ -85,8 +85,8 @@ Every mutation (write) operation must capture the presentation state before and 
 ### 🔒 Rule 5: Approval Token System
 **CRITICAL OPERATIONS REQUIRE APPROVAL**. The following operations require approval tokens:
 
-- `ppt_delete_slide.py` (Future requirement)
-- `ppt_remove_shape.py` (Future requirement)
+- `ppt_delete_slide.py` 🔒 **Actively enforced (exit code 4)**
+- `ppt_remove_shape.py` 🔒 **Actively enforced (exit code 4)**
 - Mass text replacements without dry-run
 - Background replacements on all slides
 - Any operation marked `critical: true` in manifest
@@ -169,9 +169,9 @@ from core.powerpoint_agent_core import (
     SlideNotFoundError,
     ShapeNotFoundError,
     LayoutNotFoundError,
-    ValidationError,
     ApprovalTokenError
 )
+from core.strict_validator import ValidationError
 
 def tool_logic(filepath: Path, param: str) -> Dict[str, Any]:
     """
@@ -378,10 +378,10 @@ You do not need to check `powerpoint_agent_core.py`. Use this reference for avai
 ### Slide Manipulation
 | Method | Args | Returns |
 |--------|------|---------|
-| add_slide() | layout_name: str, index: int=None | int (new index) |
-| delete_slide() | index: int | None ⚠️ Requires approval token |
-| duplicate_slide() | index: int | int (new index) |
-| reorder_slides() | from_index: int, to_index: int | None |
+| add_slide() | layout_name: str, index: int=None | Dict[str, Any] (slide_index, layout_name, total_slides, presentation_version_before/after) |
+| delete_slide() | index: int, approval_token: str=None | Dict[str, Any] (deleted_index, previous_count, new_count, presentation_version_before/after) ⚠️ Requires approval token |
+| duplicate_slide() | index: int | Dict[str, Any] (new_slide_index, total_slides, presentation_version_before/after) |
+| reorder_slides() | from_index: int, to_index: int | Dict[str, Any] (from_index, to_index, total_slides, presentation_version_before/after) |
 | set_slide_layout() | slide_index: int, layout_name: str | None |
 
 ### Content Creation
@@ -446,7 +446,7 @@ Tools are designed to work within a structured 5-phase workflow. Each tool shoul
 ```python
 import time
 
-def detect_layouts(prs, timeout_seconds=15):
+def detect_layouts(prs, timeout_seconds=30):
     """Detect layouts with timeout protection."""
     start_time = time.perf_counter()
     results = []
@@ -496,7 +496,7 @@ def _add_transient_slide(prs, layout):
 
 **Layer 3: Partial Results + Warnings (Graceful Degradation)**
 ```python
-def probe_presentation(filepath: Path, timeout_seconds: int = 15):
+def probe_presentation(filepath: Path, timeout_seconds: int = 30):
     """
     Probe with graceful degradation.
     """

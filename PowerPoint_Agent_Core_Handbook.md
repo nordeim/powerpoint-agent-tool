@@ -1,6 +1,6 @@
-# PowerPoint Agent Core: Programming Handbook (v3.1.4)
+# PowerPoint Agent Core: Programming Handbook (v3.1.0)
 
-**Version:** 3.1.4  
+**Version:** 3.1.0  
 **Library:** `core/powerpoint_agent_core.py`  
 **License:** MIT  
 
@@ -258,7 +258,7 @@ def analyze_layout_safe(prs, layout):
 ### 6.2 Production-Grade Probe Resilience
 For production probes, implement this 3-layer pattern:
 
-1.  **Timeout Protection** (15s default)
+1.  **Timeout Protection** (30s default)
     *   Check elapsed time at each layout iteration
     *   Return partial results on timeout
 
@@ -376,7 +376,7 @@ Understanding the cost of operations is vital for building efficient agents.
 | Operation | Complexity | 10-Slide Deck | 50-Slide Deck | Notes |
 |-----------|------------|---------------|---------------|-------|
 | `get_presentation_version()` | O(N) Shapes | ~15ms | ~75ms | Scales linearly with total shape count. Called twice per mutation. |
-| `capability_probe(deep=True)` | O(M) Layouts | ~120ms | ~600ms+ | Creates/destroys slides. Has 15s timeout. |
+| `capability_probe(deep=True)` | O(M) Layouts | ~120ms | ~600ms+ | Creates/destroys slides. Has 30s timeout. |
 | `add_shape()` | O(1) | ~8ms | ~8ms | Constant time (XML injection). |
 | `replace_text(global)` | O(N) TextRuns | ~25ms | ~125ms | Regex matching across all text runs. |
 | `save()` | I/O Bound | ~50ms | ~200ms+ | Dominated by disk write speed and file size (images). |
@@ -470,7 +470,7 @@ The core library supports the 5-phase workflow through:
 *   **DELIVER**: `export_to_pdf()`, `extract_notes()`.
 
 **Phase-specific requirements**:
-*   **DISCOVER** tools must implement 15s timeout handling.
+*   **DISCOVER** tools must implement 30s timeout handling.
 *   **CREATE** tools must track version changes.
 *   **VALIDATE** tools must categorize issues by severity.
 
@@ -478,7 +478,7 @@ The core library supports the 5-phase workflow through:
 
 ## 13. Backward Compatibility Policy
 
-**v3.1.3 → v3.0.0 Compatibility**:
+**v3.1.0 → v3.0.0 Compatibility**:
 *   ✅ **Shape indices**: Methods now return dicts but preserve `shape_index` key.
 *   ✅ **Versioning**: New `presentation_version_before/after` keys are additive.
 *   ✅ **Transparency**: Deprecated but supported with conversion warnings.
@@ -486,11 +486,11 @@ The core library supports the 5-phase workflow through:
 
 **Migration Path**:
 ```python
-# v3.0 pattern (still works)
-idx = agent.add_slide()  # Returns int
+# ❌ v3.0 pattern (NO LONGER WORKS in v3.1.0+)
+idx = agent.add_slide()  # Used to return int — now returns Dict
 
-# v3.1 pattern (recommended)
-result = agent.add_slide()  # Returns dict
+# ✅ v3.1+ pattern (required)
+result = agent.add_slide()  # Returns Dict[str, Any]
 idx = result["slide_index"]
 ```
 
