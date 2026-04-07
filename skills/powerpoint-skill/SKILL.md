@@ -86,6 +86,19 @@ python scripts/generate_token.py --scope "merge:presentations:2"
 - **Safety protocols** — `references/safety-protocols.md` — clone, tokens, versioning, index refresh
 - **Workflow guide** — `references/workflow-guide.md` — step-by-step workflows for common tasks
 
+## Troubleshooting (E2E-Validated)
+
+| Symptom | Cause | Fix |
+|---------|-------|-----|
+| `jq: parse error` | Non-JSON on stdout | Always use `--json` flag; no `print()` in tools |
+| `Shape index X out of range` | Indices shifted after structural change | Run `ppt_get_slide_info.py` to refresh |
+| `Approval token required` (exit 4) | Missing token for destructive op | Generate with `scripts/generate_token.py` |
+| `ppt_add_slide.py --title` fails | No `--title` arg on this tool | Use `ppt_set_title.py` separately |
+| `ppt_add_shape.py --shape-type` fails | Arg is `--shape` not `--shape-type` | Use `--shape rectangle` |
+| `ppt_set_footer.py --show-page-number` fails | Arg is `--show-number` | Use `--show-number` |
+| PDF/Image export fails | LibreOffice not installed | Install `libreoffice-impress` (optional) |
+| `ppt_remove_shape.py` silently succeeds | Tool now requires token | Add `--approval-token` argument |
+
 ## Exit Codes
 
 | Code | Meaning | Recovery |

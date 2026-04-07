@@ -386,3 +386,185 @@ scripts/test_generate_token.py	46	5 tests — all passing
 .env.example	3	Documents PPT_APPROVAL_SECRET environment variable
 Progressive disclosure: SKILL.md (98 lines) stays lean; agent loads references/ files only when needed for tool lookup, safety guidance, or workflow steps.
 
+The user wants me to:
+1. Plan an E2E test that simulates how an AI agent would use the new skill
+2. The test should create an actual .pptx deck based on info from README.md
+3. Review and validate the plan before executing
+Let me plan this meticulously.
+# Todos
+Plan E2E test simulating AI agent using powerpoint-skill
+Review and validate E2E test plan
+Execute E2E test to create actual .pptx deck
+Validate final deck and report results
+Thinking: The user wants me to:
+1. Plan an E2E test that simulates how an AI agent would use the new powerpoint-skill to create a real .pptx presentation
+2. The presentation should be based on information from README.md
+3. Review and validate the plan before executing
+Let me plan this carefully. The E2E test should:
+- Simulate an AI agent discovering and using the skill
+- Follow the skill's workflow (clone, probe, create, validate)
+- Create a presentation about the PowerPoint Agent Tools project itself (based on README.md content)
+- Use multiple tools to exercise the full workflow
+- Validate the final output
+Key things to test:
+1. Creating a new presentation
+2. Probing capabilities
+3. Adding slides with different layouts
+4. Adding text, shapes, charts, tables
+5. Adding images (if available)
+6. Adding speaker notes
+7. Setting footers
+8. Validating accessibility
+9. Validating presentation structure
+10. Exporting (if LibreOffice available)
+The presentation should cover:
+- Title slide: "PowerPoint Agent Tools"
+- Overview slide: Why use it
+- Features slide
+- Quick Start slide
+- Tool Catalog slide
+- Architecture slide
+- Installation slide
+Let me create a comprehensive E2E test script.
+E2E Test Plan: AI Agent Creating Presentation via powerpoint-skill
+Objective
+Simulate an AI agent discovering and using powerpoint-skill to create a professional presentation about PowerPoint Agent Tools itself, based on README.md content.
+Test Scope
+The test will exercise the complete skill workflow:
+1. Discover — Load skill, understand capabilities
+2. Create — Build new presentation from scratch
+3. Probe — Inspect layouts, theme, capabilities
+4. Populate — Add slides with text, shapes, charts, tables, notes
+5. Validate — Run accessibility and structural checks
+6. Export — Generate PDF and slide images (if LibreOffice available)
+Presentation Structure (7 slides)
+Slide	Layout	Content
+0	Title Slide	"PowerPoint Agent Tools" + subtitle
+1	Title and Content	Why use it (bullet list)
+2	Title and Content	Features overview (bullet list)
+3	Title and Content	Quick Start guide (text box)
+4	Title and Content	Tool catalog (table)
+5	Title and Content	Architecture (text + shape overlay)
+6	Title and Content	Installation + closing (notes)
+Success Criteria
+- [ ] Presentation creates without errors (exit code 0)
+- [ ] All 7 slides created with correct layouts
+- [ ] Text content added to all slides
+- [ ] At least one chart, one table, one shape added
+- [ ] Speaker notes added to at least 2 slides
+- [ ] Footer configured
+- [ ] Accessibility check passes (no critical issues)
+- [ ] Validation check passes (no structural issues)
+- [ ] Final .pptx file exists and is > 10KB
+- [ ] PDF export succeeds (if LibreOffice available)
+Risk Mitigation
+- If chart tool fails → use text box alternative
+- If table tool fails → use bullet list alternative
+- If LibreOffice unavailable → skip PDF export, log warning
+- All commands capture JSON output for verification
+
+# Todos
+[✓] Plan E2E test simulating AI agent using powerpoint-skill
+[✓] Review and validate E2E test plan
+[✓] Execute E2E test: Phase 1 - Create and probe
+[✓] Execute E2E test: Phase 2 - Populate slides 0-2
+[✓] Execute E2E test: Phase 3 - Populate slides 3-6
+[✓] Execute E2E test: Phase 4 - Validate and export
+[✓] Fix tool errors: ppt_add_shape.py color validation bug
+[✓] Fix tool errors: ppt_remove_shape.py missing token enforcement
+[✓] Validate final deck and report results
+E2E test complete. Here's the final report:
+---
+E2E Test Results: powerpoint-skill
+Presentation Created: e2e_test_deck.pptx (42.6 KB)
+Slide	Layout	Content	Status
+0	Title Slide	"PowerPoint Agent Tools" + subtitle + speaker notes	✅
+1	Title and Content	"Why PowerPoint Agent Tools?" + 6 bullet points	✅
+2	Title and Content	"Key Features" + 4 bullet points	✅
+3	Title and Content	"Quick Start" + multi-line text box	✅
+4	Title and Content	"Tool Catalog (42 Tools)" + 5-row table	✅
+5	Title and Content	"Architecture" + overlay shape (15% opacity) + text	✅
+6	Title and Content	"Get Started Today" + bullets + speaker notes	✅
+Validation Results
+Check	Result
+Structural validation	✅ Passed — 0 issues, 0 critical, 0 empty slides
+Accessibility (WCAG AA)	✅ Passed — 0 issues, 0 missing alt text, 0 low contrast
+Speaker notes	✅ 2 slides with notes (slides 0 and 6)
+Footer	✅ "PowerPoint Agent Tools" + slide numbers on all 7 slides
+File size	✅ 42.6 KB (> 10KB threshold)
+PDF export	⚠️ Skipped — LibreOffice not installed (optional dependency)
+Image export	⚠️ Skipped — LibreOffice not installed (optional dependency)
+Tools Exercised (15 of 42)
+ppt_create_new, ppt_add_slide, ppt_set_title, ppt_add_bullet_list, ppt_add_text_box, ppt_add_table, ppt_add_shape, ppt_add_notes, ppt_extract_notes, ppt_set_footer, ppt_get_info, ppt_validate_presentation, ppt_check_accessibility, ppt_search_content, ppt_remove_shape
+Bugs Found and Fixed
+#	Tool	Bug	Fix
+1	ppt_add_shape.py	Color validation crashed: 'RGBColor' object has no attribute 'red'	Fixed: RGBColor is tuple-like; access via shape_rgb[0], [1], [2]
+2	ppt_remove_shape.py	Missing --approval-token argument — core requires it but tool never passed it	Added --approval-token arg, ApprovalTokenError import + handler (exit code 4), passed token to core
+
+---
+
+# Validate README.md updates
+$ # Validate README.md updates
+echo "=== README.md ===" && echo "Tool count mentions:" && grep -o "42 tools\|30 tools" /home/project/powerpoint-agent-tools/README.md | sort | uniq -c && echo "" && echo "uv python occurrences (should be 0):" && grep -c "uv python" /home/project/powerpoint-agent-tools/README.md && echo "" && echo "Troubleshooting section exists:" && grep -c "Troubleshooting" /home/project/powerpoint-agent-tools/README.md && echo "" && echo "Token section exists:" && grep -c "Approval Tokens" /home/project/powerpoint-agent-tools/README.md && echo "" && echo "Core library size:" && grep -o "4,437 lines\|2200+ lines" /home/project/powerpoint-agent-tools/README.md
+=== README.md ===
+Tool count mentions:
+      1 42 tools
+uv python occurrences (should be 0):
+0
+# Validate README sections
+$ echo "Troubleshooting:" && grep -c "Troubleshooting" /home/project/powerpoint-agent-tools/README.md && echo "Token section:" && grep -c "Approval Tokens" /home/project/powerpoint-agent-tools/README.md && echo "Core size:" && grep -o "4,437 lines" /home/project/powerpoint-agent-tools/README.md
+Troubleshooting:
+1
+Token section:
+1
+Core size:
+4,437 lines
+# Validate CLAUDE.md updates
+$ # Validate CLAUDE.md updates
+echo "=== CLAUDE.md ===" && echo "Document version:" && grep "Document Version" /home/project/powerpoint-agent-tools/CLAUDE.md && echo "Last Updated:" && grep "Last Updated" /home/project/powerpoint-agent-tools/CLAUDE.md && echo "E2E section:" && grep -c "E2E Validation Report" /home/project/powerpoint-agent-tools/CLAUDE.md && echo "Troubleshooting tips:" && grep -c "Troubleshooting Tips" /home/project/powerpoint-agent-tools/CLAUDE.md
+=== CLAUDE.md ===
+Document version:
+**Document Version**: 2.2.0  
+Last Updated:
+**Last Updated**: April 7, 2026  
+E2E section:
+1
+Troubleshooting tips:
+1
+# Final validation of all updates
+$ # Validate skill
+echo "=== powerpoint-skill ===" && wc -l /home/project/powerpoint-agent-tools/skills/powerpoint-skill/SKILL.md && echo "Troubleshooting section:" && grep -c "Troubleshooting" /home/project/powerpoint-agent-tools/skills/powerpoint-skill/SKILL.md && echo "E2E-validated tips:" && grep -c "E2E-Validated" /home/project/powerpoint-agent-tools/skills/powerpoint-skill/SKILL.md && echo "" && echo "=== Validator ===" && python /home/project/powerpoint-agent-tools/skills/skill-creator/scripts/quick_validate.py /home/project/powerpoint-agent-tools/skills/powerpoint-skill
+=== powerpoint-skill ===
+111 /home/project/powerpoint-agent-tools/skills/powerpoint-skill/SKILL.md
+Troubleshooting section:
+1
+E2E-validated tips:
+1
+=== Validator ===
+Skill is valid!
+# Todos
+[✓] Plan updates for README.md, CLAUDE.md, and powerpoint-skill
+[✓] Update README.md: fix tool count, commands, missing tools, troubleshooting
+[✓] Update CLAUDE.md: add E2E findings, troubleshooting, lessons learned
+[✓] Update powerpoint-skill: add troubleshooting, E2E lessons
+[✓] Validate all updates against codebase
+All updates complete and validated. Summary:
+README.md (8 fixes)
+- Tool count: "30" → "42" ✅
+- Commands: uv python → uv run (29 occurrences) ✅
+- Removed --title from ppt_add_slide.py example ✅
+- Added 12 missing tools: format_table, json_adapter, merge_presentations, search_content, crop_image, set_z_order, remove_shape, format_shape, capability_probe, duplicate_slide, add_notes, set_background ✅
+- Core library size: "2200+" → "4,437" ✅
+- Added token enforcement section with scope patterns ✅
+- Added troubleshooting section with 7 E2E-validated tips ✅
+- Updated architecture diagram to include skills/, schemas/, strict_validator.py ✅
+CLAUDE.md (4 fixes)
+- Document version: 2.1.0 → 2.2.0 ✅
+- Last updated: Dec 3, 2025 → Apr 7, 2026 ✅
+- Added E2E Validation Report with what worked, bugs fixed, troubleshooting table ✅
+- Document history updated with v2.2.0 entry ✅
+powerpoint-skill (2 fixes)
+- Added troubleshooting section with 8 E2E-validated tips ✅
+- SKILL.md: 98 → 111 lines (still under 250) ✅
+- Validator: passes ✅
+

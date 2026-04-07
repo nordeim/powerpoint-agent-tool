@@ -1,9 +1,9 @@
 # PowerPoint Agent Tools v3.1.1 - System Reference for AI Agents
 
 **Project Version**: 3.1.1  
-**Document Version**: 2.1.0  
-**Last Updated**: December 3, 2025  
-**Status**: Production-Ready  
+**Document Version**: 2.2.0  
+**Last Updated**: April 7, 2026  
+**Status**: Production-Ready (E2E Validated)  
 
 > **⚠️ CRITICAL SAFETY NOTICE**: Approval tokens are **STRICTLY ENFORCED** in v3.1.1 for all destructive operations (delete_slide, remove_shape, merge_presentations). Operations without valid tokens will fail with exit code 4. This is not a "future requirement"—it is active enforcement in production code.
 
@@ -387,8 +387,37 @@ uv run tools/ppt_validate_presentation.py --file "$WORK_FILE" --policy standard 
 
 | Version | Date | Changes |
 |---------|------|---------|
+| 2.2.0 | Apr 7, 2026 | E2E validated; added troubleshooting from real test; updated document version |
 | 2.0.0 | Dec 3, 2025 | **MAJOR**: Complete rewrite for v3.1.1 - Added approval tokens, geometry versioning, 42 tools, 5-level safety, recovery protocol |
 | 1.1.0 | Nov 15, 2025 | Initial v3.1.0 documentation (39 tools) |
+
+---
+
+## E2E Validation Report (April 2026)
+
+A full end-to-end test was executed simulating an AI agent using the `powerpoint-skill` to create a 7-slide presentation from scratch. Results:
+
+### What Worked ✅
+- **15 of 42 tools** exercised successfully: create_new, add_slide, set_title, add_bullet_list, add_text_box, add_table, add_shape, add_notes, extract_notes, set_footer, get_info, validate_presentation, check_accessibility, search_content, remove_shape
+- **Validation**: 0 structural issues, 0 accessibility issues (WCAG AA), 0 empty slides
+- **Speaker notes**: Successfully added to 2 slides
+- **Footer**: Configured across all 7 slides with slide numbers
+- **Content search**: Found 14 matches for "PowerPoint" across 7 slides
+- **Token enforcement**: `ppt_remove_shape.py` correctly rejects without token (exit 4), accepts with valid token (exit 0)
+
+### Bugs Found and Fixed 🔧
+1. **`ppt_add_shape.py`**: Color validation crashed (`'RGBColor' object has no attribute 'red'`). Fixed: RGBColor is tuple-like; access via `shape_rgb[0]`, `[1]`, `[2]`.
+2. **`ppt_remove_shape.py`**: Missing `--approval-token` argument — core requires it but tool never passed it. Added `--approval-token` arg, `ApprovalTokenError` handler (exit code 4), and passed token to core.
+
+### Troubleshooting Tips from E2E
+| Symptom | Root Cause | Fix |
+|---------|-----------|-----|
+| `ppt_add_slide.py --title` fails | No `--title` arg on this tool | Use `ppt_set_title.py` separately |
+| `ppt_add_shape.py --shape-type` fails | Arg is `--shape` not `--shape-type` | Use `--shape rectangle` |
+| `ppt_set_footer.py --show-page-number` fails | Arg is `--show-number` | Use `--show-number` |
+| `ppt_remove_shape.py` silently succeeds without token | Tool didn't pass token to core | Fixed: now requires `--approval-token` |
+| Color validation error on shapes | `RGBColor` is tuple, not object with `.red` | Fixed: use index access `[0]`, `[1]`, `[2]` |
+| PDF/Image export fails | LibreOffice not installed | Install `libreoffice-impress` (optional dep) |
 
 ---
 
