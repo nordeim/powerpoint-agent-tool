@@ -19,7 +19,7 @@ Build, edit, validate, and export PowerPoint presentations programmatically thro
 
 ## 🎯 Why PowerPoint Agent Tools?
 
-Traditional PowerPoint libraries require complex Python code and offer limited AI-agent-friendly APIs. **PowerPoint Agent Tools** provides a comprehensive suite of **42 stateless CLI tools** that bridge the gap between LLMs and `.pptx` files.
+Traditional PowerPoint libraries require complex Python code and offer limited AI-agent-friendly APIs. **PowerPoint Agent Tools** provides a comprehensive suite of **44 stateless CLI tools** that bridge the gap between LLMs and `.pptx` files.
 
 ✅ **CLI-First Design** - AI agents call simple commands, no Python knowledge required  
 ✅ **JSON Everywhere** - All outputs machine-parsable for easy integration  
@@ -133,6 +133,8 @@ The suite consists of **42 tools** organized by capability.
 | `ppt_format_shape.py` | Update fill/border colors and opacity |
 | `ppt_remove_shape.py` | Remove shape ⚠️ requires token |
 | `ppt_add_connector.py` | Draw lines between shapes |
+| `ppt_reposition_shape.py` | Move and/or resize shapes |
+| `ppt_set_shape_text.py` | Update text in existing shapes |
 | `ppt_set_z_order.py` | Bring to front / send to back |
 | `ppt_set_background.py` | Set slide background color or image |
 

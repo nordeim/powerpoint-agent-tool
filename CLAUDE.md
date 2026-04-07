@@ -39,7 +39,7 @@
 
 ### Core Capabilities
 
-- **42 stateless CLI tools** (formerly 39, expanded with adapter/merge/search)
+- **44 stateless CLI tools** (formerly 42, expanded with reposition_shape, set_shape_text)
 - **Atomic file operations** with OS-level locking preventing corruption
 - **Governance enforcement** via HMAC-SHA256 approval tokens for destructive ops
 - **Geometry-aware versioning** detecting layout corruption invisible to content hashing
@@ -174,7 +174,7 @@ uv run tools/ppt_validate_presentation.py --file work.pptx --policy standard --j
 
 - **Creation**: 5 tools (create_new, create_from_template, create_from_structure, clone, merge)
 - **Slides**: 4 tools (add, delete, duplicate, reorder)
-- **Shapes**: 4 tools (add, remove, format, z-order)
+- **Shapes**: 6 tools (add, remove, format, z-order, reposition, set_text)
 - **Text**: 4 tools (text_box, title, format, replace)
 - **Images**: 4 tools (insert, replace, crop, properties)
 - **Charts**: 3 tools (add, update_data, format)
@@ -300,7 +300,7 @@ uv run tools/ppt_get_slide_info.py --file work.pptx --slide 0 --json > /dev/null
 
 **Slide Management** (4): ppt_add_slide, ppt_delete_slide, ppt_duplicate_slide, ppt_reorder_slides
 
-**Shape & Drawing** (4): ppt_add_shape, ppt_remove_shape, ppt_format_shape, ppt_set_z_order
+**Shape & Drawing** (6): ppt_add_shape, ppt_remove_shape, ppt_format_shape, ppt_set_z_order, ppt_reposition_shape (NEW), ppt_set_shape_text (NEW)
 
 **Text & Formatting** (4): ppt_add_text_box, ppt_add_bullet_list, ppt_set_title, ppt_format_text
 

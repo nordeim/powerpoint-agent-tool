@@ -5,7 +5,7 @@ description: Create, edit, and validate PowerPoint presentations using the Power
 
 # PowerPoint Presentation Skill
 
-Systematic creation and modification of PowerPoint (.pptx) presentations via 42 stateless CLI tools.
+Systematic creation and modification of PowerPoint (.pptx) presentations via 44 stateless CLI tools.
 
 ## Core Principles
 

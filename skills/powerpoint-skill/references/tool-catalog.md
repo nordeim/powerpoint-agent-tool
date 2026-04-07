@@ -47,6 +47,8 @@ Shape types: `rectangle`, `rounded_rectangle`, `oval`, `triangle`, `diamond`, `p
 | `ppt_add_bullet_list.py` | Bullet list | `--slide`, `--items` (comma-separated), `--position`, `--size` |
 | `ppt_add_notes.py` | Speaker notes | `--slide`, `--text`, `--mode` (append/prepend/overwrite) |
 | `ppt_add_connector.py` | Connect shapes | `--slide`, `--from-shape`, `--to-shape`, `--connector-type` (straight/elbow/curve) |
+| `ppt_reposition_shape.py` | Move/resize shapes | `--slide`, `--shape`, `--position`, `--size` |
+| `ppt_set_shape_text.py` | Update shape text | `--slide`, `--shape`, `--text` |
 | `ppt_set_footer.py` | Footer config | `--text`, `--show-number`, `--show-date` |
 | `ppt_set_background.py` | Background | `--slide` or `--all-slides`, `--color` or `--image` |
 

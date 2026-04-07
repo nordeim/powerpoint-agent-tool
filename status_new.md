@@ -662,3 +662,34 @@ PowerPoint_Agent_Core_Handbook.md (1 fix)
 Programming_Guides_Validation_Report.md (1 addition)
 - Added Section 6: Remediation Status table documenting all 10 original fixes + 11 E2E-driven updates, all marked ✅ complete
 
+---
+
+# Todos
+[✓] Create ppt_reposition_shape.py tool for moving/resizing shapes
+[✓] Fix all overflowing slide number text boxes (7 slides)
+[✓] Fix all overflowing content text boxes (slides 2-4, 7)
+[✓] Validate all 7 slides have zero overflow issues
+[✓] Create ppt_set_shape_text.py tool for updating shape text
+[✓] Update catalogs (README, CLAUDE.md, skill) with new tools
+Thinking: All tasks completed. Let me summarize the results.
+All fixes complete. Here's the summary:
+Slide Fixes Applied
+Issue	Slides Affected	Fix Applied
+Overflowing slide numbers (12.3" left)	Slides 1-5, 7	Repositioned to 8.5" left
+Overflowing content text boxes (10.7" wide)	Slides 2-4, 7	Resized to 8.0" wide, repositioned to 1.0" left
+Overflowing table (10.7" wide)	Slide 5	Removed and recreated at 8.0" wide
+Overlay on top of text	Slide 6	Sent to back via z-order
+Stray test rectangle	Slide 6	Removed with approval token
+Overflowing overlay (13.3" wide)	Slide 6	Removed and recreated at 10.0" wide
+New Tools Created
+Tool	Purpose	Lines
+ppt_reposition_shape.py	Move and/or resize any shape by absolute inches	191
+ppt_set_shape_text.py	Update text content of existing shapes/text boxes	179
+Final Validation
+Check	Result
+Overflow issues	0 across all 7 slides ✅
+Structural validation	PASSED (0 issues) ✅
+Accessibility (WCAG AA)	PASSED (0 issues) ✅
+Tool count	44 (42 + 2 new) ✅
+Catalogs updated	README.md, CLAUDE.md, powerpoint-skill ✅
+
