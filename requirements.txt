@@ -1,15 +1,16 @@
 # PowerPoint Agent Tool - Dependencies
 # Install with: pip install -r requirements.txt
+# Successfully installed Pillow-12.2.0 jsonschema-4.26.0 pandas-3.0.2 pytest-cov-7.1.0 python-pptx-1.0.2
 
 # Core dependencies (required)
-python-pptx==0.6.23       # PowerPoint manipulation
-Pillow>=12.0.0            # Image processing
-pandas>=2.3.2             # Data handling for charts (optional)
-jsonschema>=4.25.1         # JSON Schema validation
+python-pptx==1.0.2       # PowerPoint manipulation
+Pillow>=12.2.0           # Image processing
+pandas>=3.0.2            # Data handling for charts (optional)
+jsonschema>=4.26.0         # JSON Schema validation
 
 # Development dependencies (for testing)
-# pytest>=8.4.2           # Test runner (optional)
-# pytest-cov>=6.3.0       # Coverage reporting (optional)
+# pytest>=9.0.2           # Test runner (optional)
+# pytest-cov>=7.1.0       # Coverage reporting (optional)
 
 # Note: Python 3.8+ required
 # Note: For PDF export, install LibreOffice separately:

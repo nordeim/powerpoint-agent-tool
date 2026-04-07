@@ -88,6 +88,7 @@ Every mutation (write) operation must capture the presentation state before and 
 
 - `ppt_delete_slide.py` 🔒 **Actively enforced (exit code 4)**
 - `ppt_remove_shape.py` 🔒 **Actively enforced (exit code 4)**
+- `ppt_merge_presentations.py` 🔒 **Actively enforced (exit code 4)**
 - Mass text replacements without dry-run
 - Background replacements on all slides
 - Any operation marked `critical: true` in manifest
@@ -406,6 +407,8 @@ You do not need to check `powerpoint_agent_core.py`. Use this reference for avai
 | remove_shape() | slide_index, shape_index | Remove shape from slide ⚠️ Requires approval token |
 | set_z_order() | slide_index, shape_index, action | Actions: bring_to_front, send_to_back, bring_forward, send_backward ⚠️ Refresh indices after |
 | add_connector() | slide_index, connector_type, start_shape_index, end_shape_index | Types: straight, elbow, curve |
+| reposition_shape() | slide_index, shape_index, position=None, size=None | Move/resize shapes by absolute inches |
+| set_shape_text() | slide_index, shape_index, text | Update text in existing shapes |
 | crop_image() | slide_index, shape_index, crop_box: Dict | crop_box: {"left": %, "top": %, "right": %, "bottom": %} |
 | set_image_properties() | slide_index, shape_index, alt_text=None | Set accessibility |
 
@@ -703,6 +706,9 @@ These issues were discovered during end-to-end testing of the `powerpoint-skill`
 | `ppt_remove_shape.py` silently succeeds without token | Tool didn't pass token to core | Fixed: now requires `--approval-token` |
 | Color validation error on shapes | `RGBColor` is tuple, not object with `.red` | Fixed: use index access `[0]`, `[1]`, `[2]` |
 | PDF/Image export fails | LibreOffice not installed | Install `libreoffice-impress` (optional dep) |
+| Shape overflow on 4:3 slides | Percentage positioning uses 16:9 defaults | Use absolute inches for 4:3 presentations |
+| Table overflows right margin | Table width exceeds slide width | Use 80% width max, or absolute inches |
+| Overlay covers text content | Overlay added at top z-order | Use `ppt_set_z_order.py --action send_to_back` |
 
 ## 10. Contribution Workflow
 
