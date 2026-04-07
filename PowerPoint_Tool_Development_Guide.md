@@ -442,6 +442,8 @@ You do not need to check `powerpoint_agent_core.py`. Use this reference for avai
 | `replace_text()` | `find: str, replace: str, match_case: bool=False` | Global text replacement |
 | `remove_shape()` | `slide_index, shape_index` | Remove shape from slide ⚠️ **Requires approval token** |
 | `set_z_order()` | `slide_index, shape_index, action` | Actions: `bring_to_front`, `send_to_back`, `bring_forward`, `send_backward` ⚠️ **Refresh indices after** |
+| `reposition_shape()` | `slide_index, shape_index, position=None, size=None` | Move and/or resize shapes by absolute inches |
+| `set_shape_text()` | `slide_index, shape_index, text` | Update text content of existing shapes |
 | `add_connector()` | `slide_index, connector_type, start_shape_index, end_shape_index` | Types: `straight`, `elbow`, `curve` |
 | `crop_image()` | `slide_index, shape_index, crop_box: Dict` | crop_box: `{"left": %, "top": %, "right": %, "bottom": %}` |
 | `set_image_properties()` | `slide_index, shape_index, alt_text=None` | Set accessibility |

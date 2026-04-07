@@ -278,7 +278,7 @@ All critical findings from this report have been remediated:
 
 | Update | Status |
 |--------|--------|
-| README.md: tool count 30 → 42 | ✅ |
+| README.md: tool count 30 → 44 | ✅ |
 | README.md: `uv python` → `uv run` (29 occurrences) | ✅ |
 | README.md: removed `--title` from `ppt_add_slide.py` example | ✅ |
 | README.md: added 12 missing tools to catalog | ✅ |
@@ -295,3 +295,17 @@ All critical findings from this report have been remediated:
 | Tool Dev Guide: set_footer args fixed | ✅ |
 | Tool Dev Guide: E2E troubleshooting added | ✅ |
 | Core Handbook: E2E validation note added | ✅ |
+
+### E2E Slide Fix Updates
+
+| Update | Status |
+|--------|--------|
+| Created `ppt_reposition_shape.py` tool | ✅ |
+| Created `ppt_set_shape_text.py` tool | ✅ |
+| Fixed all slide overflow issues (7 slides → 0 overflow) | ✅ |
+| Fixed slide number positions (12.3" → 8.5" left) | ✅ |
+| Fixed content text box widths (10.7" → 8.0" wide) | ✅ |
+| Fixed table sizing on slide 5 (10.7" → 8.0" wide) | ✅ |
+| Fixed overlay z-order on slide 6 (sent to back) | ✅ |
+| Removed stray test rectangle from slide 6 | ✅ |
+| Updated all catalogs to 44 tools | ✅ |

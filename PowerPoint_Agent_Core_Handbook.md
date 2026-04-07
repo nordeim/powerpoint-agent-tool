@@ -195,6 +195,16 @@ Used in `add_shape`, `add_text_box`, `insert_image`, etc.
 *   **Internal**: Physically moves the XML element in `<p:spTree>`.
 *   **Critical Side Effect**: **Invalidates Shape Indices**. Tools must warn users to re-query `get_slide_info`.
 
+#### `reposition_shape(slide_index, shape_index, position=None, size=None)`
+*   **Purpose**: Move and/or resize an existing shape.
+*   **Arguments**: `position` dict with `left`/`top` (inches), `size` dict with `width`/`height` (inches).
+*   **Returns**: Dict with before/after dimensions.
+
+#### `set_shape_text(slide_index, shape_index, text)`
+*   **Purpose**: Update text content of an existing shape or text box.
+*   **Arguments**: `text` string (supports `\n` for line breaks).
+*   **Returns**: Dict with text preview and length metrics.
+
 ### 5.4 Text & Content
 
 #### `add_text_box` / `add_bullet_list`
