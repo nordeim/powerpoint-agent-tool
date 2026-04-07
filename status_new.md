@@ -198,3 +198,54 @@ Code Changes:
 - tools/ppt_merge_presentations.py: Added --approval-token arg, token validation, ApprovalTokenError handler with exit code 4
 All grep checks returned zero matches for error patterns — remediation is complete.
 
+I need to read the skill-creator SKILL.md and reference files to understand the skill format, then create a comprehensive powerpoint-skill.
+→ Read skills/skill-creator/SKILL.md 
+Thinking: Now I have a thorough understanding of how skills work. Let me also check if there's an agent_skills_spec.md file referenced in the skill-creator:
+✱ Glob "**/agent_skills_spec.md" in . (1 match)
+→ Read skills/agent_skills_spec.md 
+Thinking: Now I have a thorough understanding of:
+1. The skill-creator/SKILL.md - how to create skills, the anatomy, progressive disclosure, size limits
+2. The agent_skills_spec.md - the formal spec for SKILL.md (YAML frontmatter + markdown body)
+3. The PowerPoint Agent Tools codebase - 42 tools, safety hierarchy, workflows
+Now I need to create a skill that allows an AI agent to systematically create PowerPoint presentations without referring to external guides. The skill should:
+- Be under 250 lines for SKILL.md
+- Use progressive disclosure (references/ for detailed content)
+- Cover the complete workflow: clone → probe → plan → create → validate → deliver
+- Reference the actual tools and their usage patterns
+- Include safety protocols (tokens, version tracking, index refresh)
+Let me plan the structure:
+skills/powerpoint-skill/
+├── SKILL.md (main entry, <250 lines)
+├── references/
+│   ├── tool-catalog.md       # All 42 tools by category
+│   ├── safety-protocols.md   # Clone, tokens, versioning, index refresh
+│   └── workflow-guide.md     # Step-by-step presentation creation
+└── scripts/
+    └── generate_token.py     # Helper for approval token generation
+Let me create this meticulously.
+Now I have thorough understanding of the skill spec, creation process, and the PowerPoint codebase. Let me plan and execute.
+
+# Todos
+[✓] Plan skill structure with progressive disclosure
+[✓] Create skill directory structure
+[✓] Write SKILL.md (under 250 lines)
+[✓] Write references/tool-catalog.md
+[✓] Write references/safety-protocols.md
+[✓] Write references/workflow-guide.md
+[✓] Write scripts/generate_token.py
+[✓] Validate skill with package_skill.py
+Skill created and validated. Here's the final structure:
+skills/powerpoint-skill/
+├── SKILL.md                          (120 lines — core instructions, quick start, patterns)
+├── references/
+│   ├── tool-catalog.md               (all 42 tools by category with args)
+│   ├── safety-protocols.md           (clone, tokens, versioning, index refresh, recovery)
+│   └── workflow-guide.md             (8 step-by-step workflows: create, edit, delete, overlay, chart, merge, accessibility, export)
+└── scripts/
+    └── generate_token.py             (HMAC token generator for destructive ops)
+Progressive disclosure design:
+- SKILL.md (120 lines) — always loaded; covers principles, quick start, position/size formats, token usage, exit codes
+- tool-catalog.md — loaded when agent needs to look up a specific tool's arguments
+- safety-protocols.md — loaded when agent needs clone, token, versioning, or recovery guidance
+- workflow-guide.md — loaded when agent needs step-by-step instructions for common tasks
+
