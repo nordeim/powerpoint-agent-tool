@@ -3,6 +3,7 @@
 **Version:** 3.1.0  
 **Library:** `core/powerpoint_agent_core.py`  
 **License:** MIT  
+**E2E Validated:** April 7, 2026 — Full 7-slide presentation created successfully via `powerpoint-skill`  
 
 ---
 

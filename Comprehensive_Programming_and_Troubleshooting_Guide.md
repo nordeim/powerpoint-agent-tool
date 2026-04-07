@@ -57,11 +57,12 @@ sys.stderr = open(os.devnull, 'w')
 # ✅ CORRECT: Clone first, then operate
 from core.powerpoint_agent_core import PowerPointAgent
 
-with PowerPointAgent() as agent:
-    agent.clone_presentation(
-        source=Path("/source/template.pptx"),
-        output=Path("/work/modified.pptx")
-    )
+# Open the source, then clone
+with PowerPointAgent(Path("/source/template.pptx")) as agent:
+    agent.open(Path("/source/template.pptx"))
+    new_agent = agent.clone_presentation(Path("/work/modified.pptx"))
+    new_agent.save()
+    new_agent.close()
     
 # Now operate on the work copy
 with PowerPointAgent(Path("/work/modified.pptx")) as agent:
@@ -421,7 +422,7 @@ You do not need to check `powerpoint_agent_core.py`. Use this reference for avai
 | format_chart() | slide_index, chart_index, title=None, legend_position=None | Modify chart appearance |
 | add_notes() | slide_index, text, mode="append" | Modes: append, prepend, overwrite (v3.1.0+) |
 | extract_notes() | None | Returns Dict[int, str] of all notes by slide |
-| set_footer() | slide_index, text=None, show_page_number=False, show_date=False | Configure slide footer |
+| set_footer() | slide_index=None, text=None, show_number=False, show_date=False | Configure slide footer |
 | set_background() | slide_index=None, color=None, image_path=None | Set slide or presentation background |
 
 ## 7. Workflow Context
@@ -689,6 +690,19 @@ class TestAddShapeOpacity:
              
             assert "Approval token required" in str(excinfo.value)
 ```
+
+## 9.5 E2E-Validated Troubleshooting Tips
+
+These issues were discovered during end-to-end testing of the `powerpoint-skill` creating a 7-slide presentation:
+
+| Symptom | Root Cause | Fix |
+|---------|-----------|-----|
+| `ppt_add_slide.py --title` fails | No `--title` arg on this tool | Use `ppt_set_title.py` separately |
+| `ppt_add_shape.py --shape-type` fails | Arg is `--shape` not `--shape-type` | Use `--shape rectangle` |
+| `ppt_set_footer.py --show-page-number` fails | Arg is `--show-number` | Use `--show-number` |
+| `ppt_remove_shape.py` silently succeeds without token | Tool didn't pass token to core | Fixed: now requires `--approval-token` |
+| Color validation error on shapes | `RGBColor` is tuple, not object with `.red` | Fixed: use index access `[0]`, `[1]`, `[2]` |
+| PDF/Image export fails | LibreOffice not installed | Install `libreoffice-impress` (optional dep) |
 
 ## 10. Contribution Workflow
 

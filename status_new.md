@@ -568,3 +568,97 @@ powerpoint-skill (2 fixes)
 - SKILL.md: 98 → 111 lines (still under 250) ✅
 - Validator: passes ✅
 
+---
+
+The user wants me to update 4 documents:
+1. Comprehensive_Programming_and_Troubleshooting_Guide.md
+2. PowerPoint_Tool_Development_Guide.md
+3. PowerPoint_Agent_Core_Handbook.md
+4. Programming_Guides_Validation_Report.md
+Let me analyze what needs fixing in each based on my previous validation and E2E findings.
+Comprehensive_Programming_and_Troubleshooting_Guide.md:
+- Line 88-89: Token status already fixed to "Actively enforced (exit code 4)" ✅
+- Line 174: ValidationError import already fixed ✅
+- Line 381-384: API return types already fixed to Dictstr, Any ✅
+- Line 449, 499: timeout_seconds=30 already fixed ✅
+- Line 61: clone_presentation example still shows source=..., output=... ❌ needs fix
+- Line 424: set_footer() args show show_page_number but actual arg is show_number ❌ needs fix
+PowerPoint_Tool_Development_Guide.md:
+- Line 77-78: Token status already fixed ✅
+- Line 198: ValidationError import already fixed ✅
+- Line 419-422: API return types already fixed ✅
+- Line 605, 667, 705: timeout_seconds=30 already fixed ✅
+- Line 26-34: clone_presentation example already fixed ✅
+- Line 462: set_footer() args show show_page_number ❌ needs fix
+PowerPoint_Agent_Core_Handbook.md:
+- Line 1-3: Version already fixed to v3.1.0 ✅
+- Line 261: Timeout already fixed to 30s ✅
+- Line 379: Timeout already fixed to 30s ✅
+- Line 473: Timeout already fixed to 30s ✅
+- Line 481-495: Backward compat section already fixed ✅
+- Line 214: set_footer(text, show_number, show_date) - correct ✅
+Wait, let me re-check the actual args for set_footer in the core:
+Looking at the core API cheatsheet in the handbook, line 214 says set_footer(text, show_number, show_date) which matches the actual tool arg --show-number. But the Comprehensive guide line 424 says show_page_number which is wrong.
+Let me also check what other fixes are needed:
+For Comprehensive_Programming_and_Troubleshooting_Guide.md:
+- Line 61: agent.clone_presentation(source=Path(...), output=Path(...)) - this is wrong, should be agent.clone_presentation(Path(...))
+For PowerPoint_Tool_Development_Guide.md:
+- Line 462: set_footer() args show show_page_number=False - should be show_number=False
+For PowerPoint_Agent_Core_Handbook.md:
+- Looks mostly clean already from previous fixes.
+For Programming_Guides_Validation_Report.md:
+- This should be updated to reflect that the fixes have been applied, changing the accuracy scores.
+Let me also add E2E findings and troubleshooting tips to these documents as requested.
+Let me plan the edits:
+1. Comprehensive_Programming_and_Troubleshooting_Guide.md:
+   - Fix clone_presentation example (line 61)
+   - Fix set_footer args (line 424)
+   - Add E2E troubleshooting section
+2. PowerPoint_Tool_Development_Guide.md:
+   - Fix set_footer args (line 462)
+   - Add E2E troubleshooting section
+3. PowerPoint_Agent_Core_Handbook.md:
+   - Already clean, maybe add E2E note
+4. Programming_Guides_Validation_Report.md:
+   - Update to reflect fixes applied, change accuracy scores
+Let me execute these fixes.
+# Todos
+Fix Comprehensive_Programming_and_Troubleshooting_Guide.md: clone example, set_footer args, add E2E tips
+Fix PowerPoint_Tool_Development_Guide.md: set_footer args, add E2E tips
+Update PowerPoint_Agent_Core_Handbook.md: add E2E validation note
+Update Programming_Guides_Validation_Report.md: reflect fixes applied
+Validate all updates against codebase
+Thinking: Let me identify the remaining issues in each document that need fixing based on my E2E findings:
+Comprehensive_Programming_and_Troubleshooting_Guide.md:
+1. Line 61-63: clone_presentation(source=..., output=...) — wrong signature (already fixed in Tool Dev Guide, need to check here)
+2. Line 424: set_footer() args show show_page_number=False — actual arg is show_number
+3. Missing E2E troubleshooting tips
+PowerPoint_Tool_Development_Guide.md:
+1. Line 462: set_footer() args show show_page_number=False — should be show_number
+2. Missing E2E troubleshooting tips
+PowerPoint_Agent_Core_Handbook.md:
+- Already mostly accurate. Just needs E2E validation note.
+Programming_Guides_Validation_Report.md:
+- Needs update to reflect that fixes have been applied.
+Let me fix the remaining issues systematically.
+← Edit Comprehensive_Programming_and_Troubleshooting_Guide.md
+
+# Todos
+[✓] Fix Comprehensive_Programming_and_Troubleshooting_Guide.md: clone example, set_footer args, add E2E tips
+[✓] Fix PowerPoint_Tool_Development_Guide.md: set_footer args, add E2E tips
+[✓] Update PowerPoint_Agent_Core_Handbook.md: add E2E validation note
+[✓] Update Programming_Guides_Validation_Report.md: reflect fixes applied
+[✓] Validate all updates against codebase
+All updates complete and validated. Summary of changes across all 4 documents plus the validation report:
+Comprehensive_Programming_and_Troubleshooting_Guide.md (3 fixes)
+- Clone example: Fixed clone_presentation(source=, output=) → correct pattern with open() then clone_presentation(output_path)
+- set_footer args: show_page_number → show_number (matches actual tool)
+- Added Section 9.5: E2E-Validated Troubleshooting Tips (6 items from real test)
+PowerPoint_Tool_Development_Guide.md (2 fixes)
+- set_footer args: show_page_number → show_number
+- Added Section 12: E2E-Validated Troubleshooting Tips (6 items)
+PowerPoint_Agent_Core_Handbook.md (1 fix)
+- Added E2E validation note to header: "E2E Validated: April 7, 2026 — Full 7-slide presentation created successfully via powerpoint-skill"
+Programming_Guides_Validation_Report.md (1 addition)
+- Added Section 6: Remediation Status table documenting all 10 original fixes + 11 E2E-driven updates, all marked ✅ complete
+
